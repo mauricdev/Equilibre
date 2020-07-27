@@ -114,11 +114,10 @@
                  <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="ventas"><i class="fa fa-circle-o"></i> Ventas</a></li>
-                <li><a href="ventas/cliente"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                <li><a href="{{url('almacen/ventas')}}"><i class="fa fa-circle-o"></i> Ventas</a></li>
+                <li><a href="{{url('almacen/persona')}}"><i class="fa fa-circle-o"></i> Clientes</a></li>
               </ul>
-            </li>
-                       
+            </li>                       
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-folder"></i> <span>Acceso</span>
@@ -192,9 +191,8 @@
       <!--Fin-Contenido-->
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 2.3.0
         </div>
-        <strong>Copyright &copy; 2015-2020 <a href="www.incanatoit.com">IncanatoIT</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2020 <a href="www.4dev.cl"> 4dev.cl</a>.</strong>
       </footer>
 
       

@@ -24,7 +24,8 @@ Route::resource('almacen/articulo','ArticuloController');
 Route::resource('almacen/ventas','ventasController');
 Route::resource('almacen/usuario','UsuarioController');
 Route::resource('almacen/dashborad','inicioController');
+Route::resource('almacen/persona','personaController');
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-Route::get('/{slug?}', 'HomeController@index');
+//Route::get('/{slug?}', 'HomeController@index');

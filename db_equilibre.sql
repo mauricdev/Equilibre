@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2020 at 09:05 PM
+-- Generation Time: Jul 28, 2020 at 01:25 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -63,6 +63,51 @@ CREATE TABLE `detalle_venta` (
   `precio_total` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Dumping data for table `detalle_venta`
+--
+
+INSERT INTO `detalle_venta` (`idventa`, `Persona_rut`, `idproducto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(2, '19677005-4', '780431289642', 2, 500000, 1000000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`migration`, `batch`) VALUES
+('2014_10_12_000000_create_users_table', 1),
+('2014_10_12_100000_create_password_resets_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('mauric.gutierr1995@gmail.com', 'ad0d1f855f9d69769091a4bbd3b587e7bc2fd37be364e83fe1b8e455aa3646dd', '2020-07-27 21:08:49');
+
 -- --------------------------------------------------------
 
 --
@@ -78,6 +123,15 @@ CREATE TABLE `persona` (
   `ciudad` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `telefono` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `persona`
+--
+
+INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciudad`, `telefono`) VALUES
+('18821824-5', 'Mauricio ', 'Gutierrez Sanhueza', 'Mauric.gutierr1995@gmail.com', 'Mi casa', 'Coronel', 952429788),
+('188218245', 'asdqasd', 'qwasd', 'asd@gmail.com', 'asdasd', 'asdasd', 123123),
+('19677005-4', 'Jorge', 'Troncoso Irribarra', 'j.troncosoi@gmail.com', 'Mi casa', 'Tomé', 912345678);
 
 -- --------------------------------------------------------
 
@@ -143,15 +197,26 @@ INSERT INTO `proveedor` (`idProveedor`, `razonsocial`, `direccion`, `ciudad`, `p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `usuario` (
-  `rut` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `nombre` varchar(150) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `correo` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `contrasena` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Mauricio Gutierrez', 'mauric.gutierr1995@gmail.com', '$2y$10$5MZzvxQsJ2top09H0Tqh7.vcYZYgOH2OBvtlew0JKCLn.s8U58t5y', 'hLJoSosRsl2T5aUcY8ppu7eGKwfo6ATymTELctqFwbb9o0DqensChAJLdnTW', '2020-07-27 20:59:57', '2020-07-27 23:18:54'),
+(2, 'Juanito', 'Juanito1@gmail.com', '$2y$10$hsR454MBlUwaJojMBB6KdOM6jiuBVBVV5dOOUlMfGSFPAL6lg3/Ay', NULL, '2020-07-27 21:53:07', '2020-07-27 21:59:07');
 
 -- --------------------------------------------------------
 
@@ -163,8 +228,17 @@ CREATE TABLE `venta` (
   `idventa` int(11) NOT NULL,
   `total_venta` float DEFAULT NULL,
   `fecha` datetime DEFAULT NULL,
-  `Persona_rut` varchar(10) COLLATE utf8_spanish2_ci NOT NULL
+  `Persona_rut` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `Estado` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `venta`
+--
+
+INSERT INTO `venta` (`idventa`, `total_venta`, `fecha`, `Persona_rut`, `Estado`) VALUES
+(1, 500000, '2020-07-27 14:45:34', '18821824-5', 1),
+(2, 200000, '2020-07-27 14:47:34', '19677005-4', 1);
 
 --
 -- Indexes for dumped tables
@@ -182,6 +256,13 @@ ALTER TABLE `categoria`
 ALTER TABLE `detalle_venta`
   ADD PRIMARY KEY (`idventa`,`Persona_rut`,`idproducto`),
   ADD KEY `fk_dventa_producto_idx` (`idproducto`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`),
+  ADD KEY `password_resets_token_index` (`token`);
 
 --
 -- Indexes for table `persona`
@@ -204,10 +285,11 @@ ALTER TABLE `proveedor`
   ADD PRIMARY KEY (`idProveedor`);
 
 --
--- Indexes for table `usuario`
+-- Indexes for table `users`
 --
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`rut`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
 -- Indexes for table `venta`
@@ -227,10 +309,16 @@ ALTER TABLE `categoria`
   MODIFY `idcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

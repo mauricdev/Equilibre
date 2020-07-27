@@ -4,30 +4,31 @@ namespace equilibre\Http\Controllers;
 
 use Illuminate\Http\Request;
 use equilibre\Http\Requests;
-use equilibre\Provedor;
+use equilibre\Ventas;
 use Illuminate\Support\Facades\Redirect;
-use equilibre\Http\Requests\proveedorFormRequest;
+use equilibre\Http\Requests\ventasFormRequest;
 use DB;
+use equilibre\detalle_venta;
 
-
-class proveedorController extends Controller
+class ventasController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
-
+   
     public function index(Request $request)
     {
-        if ($request)
-        {
-            $query=trim($request->get('searchText'));
-            $proveedor=DB::table('proveedor')->where('idProveedor','LIKE','%'.$query.'%')
-            ->where ('Estado','=','1')
-            ->orderBy('idProveedor')
-            ->paginate(10);
-            return view('almacen.proveedor.index',["proveedor"=>$proveedor,"searchText"=>$query]);
-        }
+        $query=trim($request->get('searchText'));
+        $Ventas=DB::table('venta as v')
+        ->join('persona as p','v.Persona_rut','=','p.rut')
+        ->select('v.idventa','v.total_venta','v.fecha','p.rut as Persona')
+        ->where ('estado','=','1')
+        ->where('p.rut','LIKE','%'.$query.'%')
+        ->where('p.rut','LIKE','%'.$query.'%')
+        ->orderBy('v.idventa')
+        ->paginate(10);
+        return view('almacen.ventas.index',["venta"=>$Ventas,"searchText"=>$query]);
     }
     public function create()
     {
@@ -55,7 +56,15 @@ class proveedorController extends Controller
     }
     public function edit($id)
     {
-        return view("almacen.proveedor.edit",["proveedor"=>Provedor::findOrFail($id)]);
+        $detalle=DB::table('detalle_venta as d')
+        ->join('venta as v','d.idventa','=','v.idventa')
+        ->join('persona as p','d.Persona_rut','=','p.rut')
+        ->join('producto as x','d.idproducto','=','x.idproducto') 
+        ->select('d.idventa','d.Persona_rut','p.nombre as nombre','d.idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total')
+        ->where('d.idventa','LIKE','%'.$id.'%')
+        ->orderBy('d.idventa')
+        ->paginate(10);
+        return view("almacen.ventas.edit",["detalle"=>$detalle]);
     }
     public function update(proveedorFormRequest $request,$id)
     {
@@ -73,9 +82,9 @@ class proveedorController extends Controller
     }
     public function destroy($id)
     {
-        $proveedor=Provedor::findOrFail($id);
-        $proveedor->estado='0';
-        $proveedor->update();
-        return Redirect::to('almacen/proveedor');
+        $ventas=ventas::findOrFail($id);
+        $ventas->Estado='0';
+        $ventas->update();
+        return Redirect::to('almacen/ventas');
     }
 }

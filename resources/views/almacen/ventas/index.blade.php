@@ -21,7 +21,7 @@
 				<tr>
 					<td>{{ $ven->idventa}}</td>
 					<td>{{ $ven->total_venta}}</td>
-					<td>{{ $ven->fecha}}</td>
+					<td>{{ $ven->fechaHora}}</td>
 					<td>{{ $ven->Persona}}</td>
 					<td>
 						<a href="{{URL::action('ventasController@edit',$ven->idventa)}}"><button class="btn btn-info">Detalles</button></a>

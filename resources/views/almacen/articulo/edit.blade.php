@@ -31,16 +31,6 @@
 	</div>
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<div class="form-group">
-			<label>Proveedores</label>
-			<select name="Proveedor_idProveedor" class="form-control">
-				@foreach($proveedor as $prov)
-				<option value="{{$prov->idProveedor}}">{{$prov->razonsocial}}</option>
-				@endforeach
-			</select>
-		</div>
-	</div>
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<div class="form-group">
 			<label>Categorias</label>
 			<select name="categoria_idcategoria" class="form-control">
 				@foreach($categorias as $cat)

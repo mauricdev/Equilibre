@@ -21,8 +21,8 @@ class ventasController extends Controller
     {
         $query=trim($request->get('searchText'));
         $Ventas=DB::table('venta as v')
-        ->join('persona as p','v.Persona_rut','=','p.rut')
-        ->select('v.idventa','v.total_venta','v.fecha','p.rut as Persona')
+        ->join('persona as p','v.persona_rut1','=','p.rut')
+        ->select('v.idventa','v.total_venta','v.fechaHora','p.rut as Persona')
         ->where ('estado','=','1')
         ->where('p.rut','LIKE','%'.$query.'%')
         ->where('p.rut','LIKE','%'.$query.'%')
@@ -36,18 +36,7 @@ class ventasController extends Controller
     }
     public function store (proveedorFormRequest $request)
     {
-        $Provedor=new Provedor;
-        $Provedor->idProveedor=$request->get('idProveedor');
-        $Provedor->razonsocial=$request->get('razonsocial');
-        $Provedor->direccion=$request->get('direccion');
-        $Provedor->ciudad= $request->get('ciudad');
-        $Provedor->pais=$request->get('pais');
-        $Provedor->telefono=$request->get('telefono');
-        $Provedor->correo= $request->get('correo');
-        $Provedor->descripcion=$request->get('descripcion');
-        $Provedor->Estado='1';
-        $Provedor->save();
-        return Redirect::to('almacen/proveedor');
+
 
     }
     public function show($id)
@@ -57,12 +46,12 @@ class ventasController extends Controller
     public function edit($id)
     {
         $detalle=DB::table('detalle_venta as d')
-        ->join('venta as v','d.idventa','=','v.idventa')
-        ->join('persona as p','d.Persona_rut','=','p.rut')
-        ->join('producto as x','d.idproducto','=','x.idproducto') 
-        ->select('d.idventa','d.Persona_rut','p.nombre as nombre','d.idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total')
-        ->where('d.idventa','LIKE','%'.$id.'%')
-        ->orderBy('d.idventa')
+        ->join('venta as v','d.venta_idventa','=','v.idventa')
+        ->join('persona as p','d.venta_persona_rut','=','p.rut')
+        ->join('producto as x','d.producto_idproducto','=','x.idproducto') 
+        ->select('d.venta_idventa','d.venta_persona_rut as persona','p.nombre as nombre','d.producto_idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total')
+        ->where('d.venta_idventa','LIKE','%'.$id.'%')
+        ->orderBy('d.venta_idventa')
         ->paginate(10);
         return view("almacen.ventas.edit",["detalle"=>$detalle]);
     }

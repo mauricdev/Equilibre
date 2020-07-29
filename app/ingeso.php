@@ -4,19 +4,19 @@ namespace equilibre;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ventas extends Model
+class ingeso extends Model
 {
-    protected $table='venta';
+    protected $table='ingreso';
 
-    protected $primaryKey='idventa';
+    protected $primaryKey='idingreso';
  
     public $timestamps=false;
  
  
     protected $fillable =[
-       'total_venta',
-       'fecha',
-       'persona_rut1', 
+       'fechaHora', 
+       'tipoComprobante',
+       'numeroComprobante', 
     ];
  
     protected $guarded =[

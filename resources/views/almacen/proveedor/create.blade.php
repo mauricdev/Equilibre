@@ -17,7 +17,7 @@
 			{{Form::token()}}
 			<div class="form-group">
             	<label for="nombre">Rut o id</label>
-            	<input type="text" name="idProveedor" class="form-control" placeholder="Rut o id...">
+            	<input type="text" name="idproveedor" class="form-control" placeholder="Rut o id...">
             </div>
             <div class="form-group">
             	<label for="nombre">Razón Social</label>

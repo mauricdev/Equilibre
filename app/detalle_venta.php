@@ -8,7 +8,7 @@ class detalle_venta extends Model
 {
     protected $table='detalle_venta';
 
-    protected $primaryKey='idventa';
+    protected $primaryKey='venta_idventa';
  
     public $timestamps=false;
  

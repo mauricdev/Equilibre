@@ -24,7 +24,7 @@ class proveedorFormRequest extends Request
     public function rules()
     {
         return [
-            'idProveedor' => 'required|max:50',
+            'idproveedor' => 'required|max:50',
             'razonsocial' => 'required|max:50',
             'direccion' => 'required|max:50',
             'ciudad' => 'required|max:50',

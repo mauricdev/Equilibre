@@ -24,8 +24,7 @@ class ArticuloController extends Controller
             $query=trim($request->get('searchText'));
             $Articulos=DB::table('producto as p')
             ->join('categoria as c','p.categoria_idcategoria','=','c.idcategoria')
-            ->join('proveedor as x','p.Proveedor_idProveedor','=','x.idProveedor')
-            ->select('p.idproducto','p.nombre','c.nombre as categoria','x.razonsocial as proveedor','p.unidad_medida','p.precio_compra','p.precio_venta','p.descuento','p.stock','p.stock_critico','p.Estado','p.imagen')
+            ->select('p.idproducto','p.nombre','c.nombre as categoria','p.unidad_medida','p.precio_compra','p.precio_venta','p.descuento','p.stock','p.stock_critico','p.Estado','p.imagen')
             ->where('p.idproducto','LIKE','%'.$query.'%')
             ->orwhere('p.nombre','LIKE','%'.$query.'%')
             ->orderBy('p.idproducto')
@@ -37,15 +36,13 @@ class ArticuloController extends Controller
     public function create()
     {
         $categorias=DB::table('categoria')->where('estado','=','1')->get();
-        $proveedores= DB::table('proveedor')->where('Estado','=','1')->get();
-        return view("almacen.articulo.create",["categorias"=>$categorias ,"proveedor"=>$proveedores]);
+        return view("almacen.articulo.create",["categorias"=>$categorias]);
     }
 
     public function store (ArticuloFormRequest $request)
     {
         $Articulos=new Articulo();
         $Articulos->categoria_idcategoria =$request->get('categoria_idcategoria');
-        $Articulos->Proveedor_idProveedor =$request->get('Proveedor_idProveedor');
         $Articulos->idproducto =$request->get('idproducto');
         $Articulos->nombre=$request->get('nombre');
         $Articulos->unidad_medida=$request->get('unidad_medida');
@@ -74,15 +71,13 @@ class ArticuloController extends Controller
     {
         $Articulos = Articulo::findOrFail($id);
         $categorias= DB::table('categoria')->where('estado','=','1')->get();
-        $proveedores= DB::table('proveedor')->where('Estado','=','1')->get();
-        return view("almacen.articulo.edit",["articulo"=>$Articulos,"categorias"=>$categorias,"proveedor"=>$proveedores]);
+        return view("almacen.articulo.edit",["articulo"=>$Articulos,"categorias"=>$categorias]);
     }
 
     public function update(ArticuloFormRequest $request,$id)
     {
         $Articulos=Articulo::findOrFail($id);
         $Articulos->categoria_idcategoria =$request->get('categoria_idcategoria');
-        $Articulos->Proveedor_idProveedor =$request->get('Proveedor_idProveedor');
         $Articulos->idproducto =$request->get('idproducto');
         $Articulos->nombre=$request->get('nombre');
         $Articulos->unidad_medida=$request->get('unidad_medida');

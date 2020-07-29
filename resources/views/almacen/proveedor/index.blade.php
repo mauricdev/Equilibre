@@ -24,7 +24,7 @@
 				</thead>
                @foreach ($proveedor as $prov)
 				<tr>
-					<td>{{ $prov->idProveedor}}</td>
+					<td>{{ $prov->idproveedor}}</td>
 					<td>{{ $prov->razonsocial}}</td>
 					<td>{{ $prov->direccion}}</td>
 					<td>{{ $prov->ciudad}}</td>
@@ -32,8 +32,8 @@
 					<td>{{ $prov->telefono}}</td>
 					<td>{{ $prov->correo}}</td>
 					<td>{{ $prov->descripcion}}</td>
-					<td><a href="{{URL::action('proveedorController@edit',$prov->idProveedor)}}"><button class="btn btn-info">Editar</button></a></td>
-                	<td><a href="" data-target="#modal-delete-{{$prov->idProveedor}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a></td>
+					<td><a href="{{URL::action('proveedorController@edit',$prov->idproveedor)}}"><button class="btn btn-info">Editar</button></a></td>
+                	<td><a href="" data-target="#modal-delete-{{$prov->idproveedor}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a></td>
 				</tr>
 				@include('almacen.proveedor.modal')
 				@endforeach

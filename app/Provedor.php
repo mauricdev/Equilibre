@@ -8,7 +8,7 @@ class Provedor extends Model
 {
       protected $table='proveedor';
 
-    protected $primaryKey='idProveedor';
+    protected $primaryKey='idproveedor';
  
     public $timestamps=false;
  

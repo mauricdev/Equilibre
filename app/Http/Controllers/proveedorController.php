@@ -22,9 +22,9 @@ class proveedorController extends Controller
         if ($request)
         {
             $query=trim($request->get('searchText'));
-            $proveedor=DB::table('proveedor')->where('idProveedor','LIKE','%'.$query.'%')
+            $proveedor=DB::table('proveedor')->where('idproveedor','LIKE','%'.$query.'%')
             ->where ('Estado','=','1')
-            ->orderBy('idProveedor')
+            ->orderBy('idproveedor')
             ->paginate(10);
             return view('almacen.proveedor.index',["proveedor"=>$proveedor,"searchText"=>$query]);
         }
@@ -36,7 +36,7 @@ class proveedorController extends Controller
     public function store (proveedorFormRequest $request)
     {
         $Provedor=new Provedor;
-        $Provedor->idProveedor=$request->get('idProveedor');
+        $Provedor->idProveedor=$request->get('idproveedor');
         $Provedor->razonsocial=$request->get('razonsocial');
         $Provedor->direccion=$request->get('direccion');
         $Provedor->ciudad= $request->get('ciudad');
@@ -60,7 +60,7 @@ class proveedorController extends Controller
     public function update(proveedorFormRequest $request,$id)
     {
         $Provedor=Provedor::findOrFail($id);
-        $Provedor->idProveedor=$request->get('idProveedor');
+        $Provedor->idProveedor=$request->get('idproveedor');
         $Provedor->razonsocial=$request->get('razonsocial');
         $Provedor->direccion=$request->get('direccion');
         $Provedor->ciudad= $request->get('ciudad');

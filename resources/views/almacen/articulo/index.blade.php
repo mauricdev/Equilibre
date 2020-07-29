@@ -15,7 +15,6 @@
 					<th>Codigo</th>
 					<th>Nombre</th>
 					<th>Categoria</th>
-					<th>Proveedor</th>
 					<th>Medida</th>
 					<th>Precio compra</th>
 					<th>Precio venta</th>
@@ -30,7 +29,6 @@
 					<td>{{ $art->idproducto}}</td>
 					<td>{{ $art->nombre}}</td>
 					<td>{{ $art->categoria}}</td>
-					<td>{{ $art->proveedor}}</td>
 					<td>{{ $art->unidad_medida}}</td>
 					<td>{{ $art->precio_compra}}</td>
 					<td>{{ $art->precio_venta}}</td>

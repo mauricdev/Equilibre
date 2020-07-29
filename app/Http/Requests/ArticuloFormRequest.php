@@ -33,7 +33,6 @@ class ArticuloFormRequest extends Request
             'stock_critico' => 'required|numeric',
             'imagen' => 'mimes:jpeg,bmp,png',
             'categoria_idcategoria' => 'required',
-            'Proveedor_idProveedor' => 'required',
         ];
     }
 }

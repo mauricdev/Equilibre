@@ -28,15 +28,14 @@
 						</thead>
 						@foreach ($detalle as $det)
 						<tr>
-							<td>{{ $det->idventa}}</td>
-							<td>{{ $det->Persona_rut}}</td>
+							<td>{{ $det->venta_idventa}}</td>
+							<td>{{ $det->persona}}</td>
 							<td>{{ $det->nombre}}</td>
-							<td>{{ $det->idproducto}}</td>
+							<td>{{ $det->producto_idproducto}}</td>
 							<td>{{ $det->producto}}</td>
 							<td>{{ $det->cantidad}}</td>
 							<td>{{ $det->precio_unitario}}</td>
 							<td>{{ $det->precio_total}}</td>
-
 						</tr>
 						@endforeach
 					</table>

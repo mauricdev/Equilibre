@@ -4,7 +4,7 @@ namespace equilibre\Http\Requests;
 
 use equilibre\Http\Requests\Request;
 
-class ventasFormRequest extends Request
+class ingresoFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class ventasFormRequest extends Request
     public function rules()
     {
         return [
-            'total_venta' => 'required',
-            'fecha' => 'required',
-            'persona_rut1' => 'required',
+            'fechaHora' => 'required|max:100',
+            'tipoComprobante' => 'required|max:100',
+            'numeroComprobante' => 'required|max:100',
         ];
     }
 }

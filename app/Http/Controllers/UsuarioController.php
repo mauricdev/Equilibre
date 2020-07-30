@@ -20,8 +20,10 @@ class UsuarioController extends Controller
     {
         if ($request)
         {
+             //$user=auth()->user()->email;
             $query=trim($request->get('searchText'));
             $usuarios=DB::table('Users')->where('name','LIKE','%'.$query.'%')
+            //->where('email','!=',$user)
             ->orderBy('id','desc')
             ->paginate(7);
             return view('almacen.usuario.index',["usuarios"=>$usuarios,"searchText"=>$query]);
@@ -36,7 +38,7 @@ class UsuarioController extends Controller
         $usuario=new User();
         $usuario->name =$request->get('name');
         $usuario->email =$request->get('email');
-        $usuario->password =$request->get('password');
+        $usuario->password =bcrypt($request->get('password'));
         $usuario->save();
         return Redirect::to('almacen/usuario');
     }

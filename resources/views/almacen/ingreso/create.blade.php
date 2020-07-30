@@ -151,9 +151,8 @@
 	}
 
 	function limpiar() {
-		$("#pcantidad").val("");
-		$("#pprecio_compra").val("");
-		$("#pprecio_venta").val("");
+		$("#cantidad").val("");
+		$("#precio_compra").val("");
 	}
 
 	function evaluar() {

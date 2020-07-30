@@ -14,6 +14,7 @@ use equilibre\detalle_ingeso;
 use DB;
 
 use Carbon\Carbon;
+use Hamcrest\Core\HasToString;
 use Response;
 use Illuminate\Support\Collection;
 
@@ -55,7 +56,7 @@ class ingresoController extends Controller
         try {
             DB::beginTransaction();
             $ingreso = new ingeso;
-            $mytime = Carbon::now('America/Bogota');
+            $mytime = Carbon::now('America/Santiago');
             $ingreso->fechaHora = $mytime->toDateTimeString();
             $ingreso->tipoComprobante = $request->get('tipoComprobante');
             $ingreso->numeroComprobante = $request->get('numeroComprobante');
@@ -68,24 +69,23 @@ class ingresoController extends Controller
             $precio_compra = $request->get('precio_compra');
 
             $cont = 0;
-
-            while ($cont < count($idarticulo)) 
-            {
-                $detalle = new detalleIngreso();
-                $detalle->idingreso = $ingreso->idingreso;
-                $detalle->ingreso_proveedor_idproveedor = $ingreso->proveedor_idproveedor;
-                $detalle->producto_categoria_idcategoria  = 1;
-                $detalle->producto_idproducto = $idarticulo[$cont];
-                $detalle->cantidad = $cantidad[$cont];
-                $detalle->precio_compra = $precio_compra[$cont];
-                $detalle->save();
-                $cont = $cont + 1;
-            }
+            
+                while ($cont < count($precio_compra))
+                {
+                    $detalle = new detalle_ingeso();
+                    $detalle->ingreso_idingreso = $ingreso->idingreso;
+                    $detalle->producto_idproducto = $idarticulo[$cont];
+                    $detalle->cantidad = $cantidad[$cont];
+                    $detalle->precio_compra = $precio_compra[$cont];
+                    $detalle->save();
+                    $cont = $cont + 1;
+                }            
+            
+           
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
-            return back()->withError($e->getMessage())->withInput();
         }
 
         return Redirect::to('almacen/ingreso');
@@ -96,7 +96,7 @@ class ingresoController extends Controller
         $Ingresos = DB::table('ingreso as i')
             ->join('proveedor as p', 'i.proveedor_idproveedor', '=', 'p.idproveedor')
             ->join('detalle_ingreso as d', 'i.idingreso', '=', 'd.ingreso_idingreso')
-            ->select('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
+            ->select('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial as proveedor', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
             ->where('i.idingreso', '=', $id)
             ->first();
 

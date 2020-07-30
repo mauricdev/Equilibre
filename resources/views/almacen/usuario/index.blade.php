@@ -24,7 +24,11 @@
 					<td>{{ $user->email}}</td>
 					<td>
 						<a href="{{URL::action('UsuarioController@edit',$user->id)}}"><button class="btn btn-info">Editar</button></a>
-                         <a href="" data-target="#modal-delete-{{$user->id}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a>
+					@if($user->email == auth()->user()->email)
+					@else
+					<a href="" data-target="#modal-delete-{{$user->id}}"  data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a>	
+					@endif
+
 					</td>
 				</tr>
 				@include('almacen.usuario.modal')

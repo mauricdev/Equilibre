@@ -8,7 +8,7 @@ use equilibre\Provedor;
 use Illuminate\Support\Facades\Redirect;
 use equilibre\Http\Requests\proveedorFormRequest;
 use DB;
-
+use equilibre\User;
 
 class proveedorController extends Controller
 {
@@ -19,6 +19,8 @@ class proveedorController extends Controller
 
     public function index(Request $request)
     {
+        
+
         if ($request)
         {
             $query=trim($request->get('searchText'));
@@ -26,7 +28,7 @@ class proveedorController extends Controller
             ->where ('Estado','=','1')
             ->orderBy('idproveedor')
             ->paginate(10);
-            return view('almacen.ingreso.index',["proveedor"=>$proveedor,"searchText"=>$query]);
+            return view('almacen.proveedor.index',["proveedor"=>$proveedor,"searchText"=>$query]);
         }
     }
     public function create()

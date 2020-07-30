@@ -68,10 +68,11 @@ class ingresoController extends Controller
             $cantidad = $request->get('cantidad');
             $precio_compra = $request->get('precio_compra');
 
+
             $cont = 0;
             
-                while ($cont < count($precio_compra))
-                {
+            while ($cont < count($precio_compra))
+                {                    
                     $detalle = new detalle_ingeso();
                     $detalle->ingreso_idingreso = $ingreso->idingreso;
                     $detalle->producto_idproducto = $idarticulo[$cont];

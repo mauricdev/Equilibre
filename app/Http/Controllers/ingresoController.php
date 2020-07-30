@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use equilibre\Http\Requests\ingresoFormRequest;
-use equilibre\ingreso;
+use equilibre\ingeso;
 use equilibre\detalle_ingeso;
 use DB;
 
@@ -54,13 +54,12 @@ class ingresoController extends Controller
     {
         try {
             DB::beginTransaction();
-            $ingreso = new ingreso;
-
-            $ingreso->proveedor_idproveedor = $request->get('proveedor_idproveedor ');
+            $ingreso = new ingeso;
+            $mytime = Carbon::now('America/Bogota');
+            $ingreso->fechaHora = $mytime->toDateTimeString();
             $ingreso->tipoComprobante = $request->get('tipoComprobante');
             $ingreso->numeroComprobante = $request->get('numeroComprobante');
-            $mytime = Carbon::now('America/Bogota');
-            $ingreso->fecha_hora = $mytime->toDateTimeString();
+            $ingreso->proveedor_idproveedor = $request->get('proveedor_idproveedor');
             $ingreso->Estado = 1;
             $ingreso->save();
 
@@ -70,7 +69,8 @@ class ingresoController extends Controller
 
             $cont = 0;
 
-            while ($cont < count($idarticulo)) {
+            while ($cont < count($idarticulo)) 
+            {
                 $detalle = new detalleIngreso();
                 $detalle->idingreso = $ingreso->idingreso;
                 $detalle->ingreso_proveedor_idproveedor = $ingreso->proveedor_idproveedor;
@@ -83,7 +83,7 @@ class ingresoController extends Controller
             }
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             return back()->withError($e->getMessage())->withInput();
         }

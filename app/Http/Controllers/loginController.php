@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use equilibre\Http\Requests;
 
-class inicioController extends Controller
+class loginController extends Controller
 {
     public function __construct()
     {
@@ -14,6 +14,6 @@ class inicioController extends Controller
 
     public function index(Request $request)
     {      
-            return view('inicio/index');
+            return view('auth/login');
     }
 }

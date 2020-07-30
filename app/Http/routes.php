@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('auth/login');
+    return view('almacen/inicio/index');
 });
 
 
@@ -23,10 +23,11 @@ Route::resource('almacen/proveedor','proveedorController');
 Route::resource('almacen/articulo','ArticuloController');
 Route::resource('almacen/ventas','ventasController');
 Route::resource('almacen/usuario','UsuarioController');
-Route::resource('almacen/dashborad','inicioController');
+Route::resource('almacen/dashborad','HomeController');
 Route::resource('almacen/persona','personaController');
 Route::resource('almacen/ingreso','ingresoController');
+Route::resource('auth/login','loginController');
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-//Route::get('/{slug?}', 'HomeController@index');
+Route::get('/{slug?}', 'HomeController@index');

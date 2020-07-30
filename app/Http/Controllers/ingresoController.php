@@ -32,7 +32,7 @@ class ingresoController extends Controller
             $Ingresos = DB::table('ingreso as i')
                 ->join('proveedor as p', 'i.proveedor_idproveedor', '=', 'p.idproveedor')
                 ->join('detalle_ingreso as d', 'i.idingreso', '=', 'd.ingreso_idingreso')
-                ->select('i.idingreso as id', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
+                ->select('i.idingreso as id', 'i.fechaHora' , 'i.Estado', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
                 ->where('i.numeroComprobante', 'LIKE', '%' . $query . '%')
                 ->orderBy('i.idingreso', 'desc')
                 ->groupBy('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor')
@@ -110,8 +110,8 @@ class ingresoController extends Controller
 
     public function destroy($id)
     {
-        $ingreso = ingreso::findOrFail($id);
-        $ingreso->Estado = '1';
+        $ingreso = ingeso::findOrFail($id);
+        $ingreso->Estado = '0';
         $ingreso->update();
         return redirect('almacen/ingreso');
     }

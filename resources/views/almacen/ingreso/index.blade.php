@@ -17,6 +17,7 @@
 					<th>Provedor</th>
 					<th>Razon social</th>
 					<th>Total</th>
+					<th>Estado</th>
 					<th>Opciones</th>
 				</thead>
                @foreach ($ingresos as  $prov)
@@ -25,8 +26,13 @@
 					<td>{{ date('Y-m-d H:i:s',strtotime($prov->fechaHora))}}</td>
 					<td>{{ $prov->tipoComprobante.' :  ' .$prov->numeroComprobante}}</td>
 					<td>{{ $prov->proveedor_idproveedor}}</td>
-					<td>{{ $prov->razonsocial}}</td>
+					<td>{{ $prov->razonsocial}}</td>					
 					<td>{{ $prov->total}}</td>
+					@if($prov->Estado == 1)
+					<td>Activo</td>
+					@else
+					<td>Anulada</td>
+					@endif					
 					<td><a href="{{URL::action('ingresoController@show',$prov->id)}}"><button class="btn btn-success">Detalles</button></a>
                 	<a href="" data-target="#modal-delete-{{$prov->id}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a></td>
 				</tr>

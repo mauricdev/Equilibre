@@ -4,7 +4,7 @@ namespace equilibre\Http\Controllers;
 
 use equilibre\Http\Requests;
 use Illuminate\Http\Request;
-
+use DB;
 class HomeController extends Controller
 {
     /**
@@ -24,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('almacen/dashborad/index');
+        $pastel = DB::select("SELECT count('rut') as total, ciudad as ubicacion
+        FROM persona GROUP BY ubicacion");
+        return view('almacen/dashborad/index', ["pastel" => $pastel]);
     }
 }

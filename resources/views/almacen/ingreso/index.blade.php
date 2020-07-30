@@ -22,7 +22,7 @@
                @foreach ($ingresos as  $prov)
 				<tr>
 					<td>{{ $prov->id}}</td>
-					<td>{{ date('Y-m-d-H:i:s',strtotime($prov->fechaHora))}}</td>
+					<td>{{ date('Y-m-d H:i:s',strtotime($prov->fechaHora))}}</td>
 					<td>{{ $prov->tipoComprobante.' :  ' .$prov->numeroComprobante}}</td>
 					<td>{{ $prov->proveedor_idproveedor}}</td>
 					<td>{{ $prov->razonsocial}}</td>

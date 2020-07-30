@@ -52,7 +52,7 @@ class ventasController extends Controller
         ->select('d.venta_idventa','d.venta_persona_rut as persona','p.nombre as nombre','d.producto_idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total')
         ->where('d.venta_idventa','LIKE','%'.$id.'%')
         ->orderBy('d.venta_idventa')
-        ->paginate(10);
+        ->paginate(7);
         return view("almacen.ventas.edit",["detalle"=>$detalle]);
     }
     public function update(proveedorFormRequest $request,$id)

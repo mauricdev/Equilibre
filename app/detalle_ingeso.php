@@ -15,7 +15,8 @@ class detalle_ingeso extends Model
  
     protected $fillable =[
        'cantidad', 
-       'precio_compra'
+       'precio_compra',
+       'producto_idproducto'
     ];
  
     protected $guarded =[

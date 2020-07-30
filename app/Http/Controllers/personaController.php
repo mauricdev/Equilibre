@@ -25,7 +25,7 @@ class personaController extends Controller
             $Persona=DB::table('persona')->where('nombre','LIKE','%'.$query.'%')
             ->orwhere ('rut','LIKE','%'.$query.'%')
             ->orderBy('rut')
-            ->paginate(10);
+            ->paginate(7);
             return view('almacen.persona.index',["personas"=>$Persona,"searchText"=>$query]);
         }
     }

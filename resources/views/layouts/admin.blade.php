@@ -55,7 +55,8 @@
                   <li class="user-header">
                     
                     <p>
-                     
+                    {{auth()->user()->name}}
+                    {{auth()->user()->email}}
                       <small></small>
                     </p>
                   </li>

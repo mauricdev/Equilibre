@@ -20,8 +20,8 @@
                @foreach ($venta as $ven)
 				<tr>
 					<td>{{ $ven->idventa}}</td>
-					<td>{{ $ven->total_venta}}</td>
-					<td>{{ $ven->fechaHora}}</td>
+					<td>{{ $ven->total_venta}}</td>					
+					<td>{{ date('Y-m-d H:i:s',strtotime($ven->fechaHora))}}</td>
 					<td>{{ $ven->Persona}}</td>
 					<td>
 						<a href="{{URL::action('ventasController@edit',$ven->idventa)}}"><button class="btn btn-info">Detalles</button></a>

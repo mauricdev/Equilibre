@@ -36,7 +36,7 @@ class ingresoController extends Controller
                 ->where('i.numeroComprobante', 'LIKE', '%' . $query . '%')
                 ->orderBy('i.idingreso', 'desc')
                 ->groupBy('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor')
-                ->paginate(10);
+                ->paginate(7);
             return view('almacen.ingreso.index', ["ingresos" => $Ingresos, "searchText" => $query]);
         }
     }
@@ -81,9 +81,8 @@ class ingresoController extends Controller
                     $cont = $cont + 1;
                 }            
             
-           
-
             DB::commit();
+
         } catch (Exception $e) {
             DB::rollback();
         }

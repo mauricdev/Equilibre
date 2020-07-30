@@ -27,7 +27,7 @@ class proveedorController extends Controller
             $proveedor=DB::table('proveedor')->where('idproveedor','LIKE','%'.$query.'%')
             ->where ('Estado','=','1')
             ->orderBy('idproveedor')
-            ->paginate(10);
+            ->paginate(7);
             return view('almacen.proveedor.index',["proveedor"=>$proveedor,"searchText"=>$query]);
         }
     }

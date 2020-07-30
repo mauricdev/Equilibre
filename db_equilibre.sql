@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2020 at 05:28 PM
+-- Generation Time: Jul 30, 2020 at 09:52 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -52,12 +52,32 @@ INSERT INTO `categoria` (`idcategoria`, `nombre`, `descripcion`, `estado`, `cate
 
 CREATE TABLE `detalle_ingreso` (
   `ingreso_idingreso` int(11) NOT NULL,
-  `ingreso_proveedor_idproveedor` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
-  `producto_idproducto` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
-  `producto_categoria_idcategoria` int(11) NOT NULL,
+  `producto_idproducto` bigint(255) NOT NULL,
   `cantidad` float NOT NULL,
   `precio_compra` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `detalle_ingreso`
+--
+
+INSERT INTO `detalle_ingreso` (`ingreso_idingreso`, `producto_idproducto`, `cantidad`, `precio_compra`) VALUES
+(1, 780431289642, 10, 10000),
+(54, 7, 1, 1),
+(54, 8, 1, 1),
+(55, 780431289642, 1, 1),
+(57, 7, 1, 1),
+(58, 7, 1, 1),
+(58, 8, 1, 1),
+(60, 7, 1, 1),
+(61, 7, 1, 1),
+(62, 7, 2, 2),
+(62, 8, 2, 2),
+(65, 7, 2, 2),
+(65, 8, 2, 2),
+(66, 780431289642, 3, 3),
+(67, 780431289642, 2, 5000),
+(68, 780431289642, 1, 1);
 
 --
 -- Triggers `detalle_ingreso`
@@ -77,20 +97,13 @@ DELIMITER ;
 --
 
 CREATE TABLE `detalle_venta` (
-  `producto_idproducto` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `producto_idproducto` int(50) NOT NULL,
   `cantidad` float NOT NULL,
   `precio_unitario` float NOT NULL,
   `precio_total` float NOT NULL,
   `venta_idventa` int(11) NOT NULL,
   `venta_persona_rut` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Dumping data for table `detalle_venta`
---
-
-INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario`, `precio_total`, `venta_idventa`, `venta_persona_rut`) VALUES
-('780431289642', 2, 500000, 1000000, 1, '18821824-5');
 
 -- --------------------------------------------------------
 
@@ -100,12 +113,58 @@ INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario
 
 CREATE TABLE `ingreso` (
   `idingreso` int(11) NOT NULL,
-  `fechaHora` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `fechaHora` datetime(6) NOT NULL,
   `tipoComprobante` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `numeroComprobante` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `proveedor_idproveedor` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `ingreso`
+--
+
+INSERT INTO `ingreso` (`idingreso`, `fechaHora`, `tipoComprobante`, `numeroComprobante`, `proveedor_idproveedor`, `Estado`) VALUES
+(1, '2020-07-29 16:23:04.000000', 'Boleta', '123456789', '18821824-5', 1),
+(6, '2020-07-30 10:19:12.000000', 'Boleta', '1', '1', 1),
+(7, '2020-07-30 10:19:18.000000', 'Boleta', '1', '1', 1),
+(8, '2020-07-30 10:19:48.000000', 'Factura', '123123123123', '4', 1),
+(21, '2020-07-30 11:21:28.000000', 'Boleta', '87987987987', '1', 1),
+(23, '2020-07-30 12:24:44.000000', 'Boleta', '123123', '1', 1),
+(24, '2020-07-30 12:24:53.000000', 'Boleta', '123123', '1', 1),
+(25, '2020-07-30 12:25:46.000000', 'Boleta', '1', '1', 1),
+(26, '2020-07-30 12:27:24.000000', 'Boleta', '123123', '1', 1),
+(27, '2020-07-30 13:32:55.000000', 'Boleta', '123123', '1', 1),
+(28, '2020-07-30 13:42:53.000000', 'Boleta', '123123', '1', 1),
+(29, '2020-07-30 13:43:30.000000', 'Boleta', '123', '1', 1),
+(30, '2020-07-30 13:45:33.000000', 'Boleta', '123', '1', 1),
+(31, '2020-07-30 13:45:59.000000', 'Boleta', '12', '1', 1),
+(32, '2020-07-30 13:46:28.000000', 'Boleta', '10', '1', 1),
+(33, '2020-07-30 13:47:27.000000', 'Boleta', '123', '1', 1),
+(34, '2020-07-30 13:48:04.000000', 'Boleta', '569', '1', 1),
+(36, '2020-07-30 13:49:40.000000', 'Boleta', '123', '1', 1),
+(37, '2020-07-30 13:51:17.000000', 'Boleta', '1', '1', 1),
+(38, '2020-07-30 13:52:37.000000', 'Factura', '12', '1', 1),
+(39, '2020-07-30 13:53:47.000000', 'Boleta', '12', '1', 1),
+(42, '2020-07-30 13:55:50.000000', 'Factura', '123', '1', 1),
+(43, '2020-07-30 13:56:03.000000', 'Factura', '987', '1', 1),
+(46, '2020-07-30 14:23:07.000000', 'Boleta', '54', '1', 1),
+(47, '2020-07-30 14:23:27.000000', 'Factura', '12345678', '1', 1),
+(49, '2020-07-30 14:25:51.000000', 'Factura', '3789462378346', '1', 1),
+(50, '2020-07-30 14:26:02.000000', 'Boleta', '3434343', '1', 1),
+(51, '2020-07-30 14:27:09.000000', 'Boleta', '3', '1', 1),
+(52, '2020-07-30 14:27:50.000000', 'Boleta', '1', '1', 1),
+(54, '2020-07-30 14:45:52.000000', 'Boleta', '1', '1', 1),
+(55, '2020-07-30 14:49:09.000000', 'Boleta', '1', '1', 1),
+(57, '2020-07-30 14:51:11.000000', 'Boleta', '1', '1', 1),
+(58, '2020-07-30 14:51:21.000000', 'Boleta', '1', '1', 1),
+(60, '2020-07-30 14:52:37.000000', 'Boleta', '1', '1', 1),
+(61, '2020-07-30 14:52:45.000000', 'Boleta', '1', '1', 1),
+(62, '2020-07-30 14:53:07.000000', 'Boleta', '2', '1', 1),
+(65, '2020-07-30 14:56:27.000000', 'Boleta', '2', '1', 1),
+(66, '2020-07-30 14:56:35.000000', 'Boleta', '3', '1', 1),
+(67, '2020-07-30 15:44:45.000000', 'Factura', '123', '4', 1),
+(68, '2020-07-30 15:45:48.000000', 'Boleta', '1', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -170,7 +229,7 @@ INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciu
 --
 
 CREATE TABLE `producto` (
-  `idproducto` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `idproducto` bigint(50) NOT NULL,
   `nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
   `unidad_medida` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
   `precio_compra` float NOT NULL,
@@ -189,10 +248,10 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`, `precio_venta`, `precio_descuento`, `stock`, `stock_critico`, `descuento`, `imagen`, `Estado`, `categoria_idcategoria`) VALUES
-('780431289642', 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 75.5, 100, 0, 'pesa.jpg', 0, 3),
-('780432874121', 'Pelota morada', 'Unidad', 10000, 20000, 20000, 100, 20, 0, 'pelota_morada.jpg', 0, 1),
-('780784574845', 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 100, 20, 0, 'camilla.jpg', 0, 1),
-('780987256314', 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 20, 5, 0, 'camilla-de-masaje.jpg', 0, 1);
+(780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 102.5, 100, 0, 'pesa.jpg', 1, 3),
+(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, 120, 20, 0, 'pelota_morada.jpg', 1, 1),
+(780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 100, 20, 0, 'camilla.jpg', 1, 1),
+(780987256314, 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 20, 5, 0, 'camilla-de-masaje.jpg', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -219,7 +278,7 @@ CREATE TABLE `proveedor` (
 INSERT INTO `proveedor` (`idproveedor`, `razonsocial`, `direccion`, `ciudad`, `pais`, `telefono`, `correo`, `descripcion`, `Estado`) VALUES
 ('1', 'Razón social de provedor 12312323', 'La direccion del proveedor', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor@proveedor.com', 'Esto es una descrioción larga del proveedor', 1),
 ('18821824-5', 'asdasdad2', 'asd', 'asd', 'asd', 'asd', 'asd', 'asd', 1),
-('2', 'Esta es una razón social de proveedores 2', 'La direccion del proveedor	', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor2@proveedor.com', 'Esto es una descrioción larga del proveedor', 1),
+('2', 'Razón', 'La direccion del proveedor	', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor2@proveedor.com', 'Esto es una descrioción larga del proveedor', 1),
 ('3', 'Razón social de proveedores', 'asdasd', 'asdas', 'asd', 'asdas', 'asdasd', 'asdasda', 0),
 ('4', 'RODRIGUEZ SANDOVAL', 'Lejos', 'Taiwan', 'China', '+86 123456789', 'mauric.gutierr1995@gmail.com', 'Esto es una descripción', 1);
 
@@ -244,9 +303,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Mauricio Gutierrez', 'mauric.gutierr1995@gmail.com', '$2y$10$5MZzvxQsJ2top09H0Tqh7.vcYZYgOH2OBvtlew0JKCLn.s8U58t5y', 'LG7A1o42W1UiEeKnG8Ebd6FGka8gyVFG5sBTFKpyyFdrG7dWzmOSYZTINwzV', '2020-07-28 00:59:57', '2020-07-28 19:13:14'),
-(2, 'Juanito', 'Juanito1@gmail.com', '$2y$10$hsR454MBlUwaJojMBB6KdOM6jiuBVBVV5dOOUlMfGSFPAL6lg3/Ay', NULL, '2020-07-28 01:53:07', '2020-07-28 01:59:07'),
-(3, 'koke', 'koke@gmail.com', '123456', NULL, '2020-07-29 15:28:45', '2020-07-29 15:28:45');
+(1, 'Mauricio Gutierrez S', 'mauric.gutierr1995@gmail.com', '$2y$10$UNPJ58foXdKAGk2Qz./jE.jpDrg.qDEwGzyJOxzkwSebZYSKNXrZS', 'YM0rD4KHsezBWMF1CVEjuKC2sZZYOg5MDb9PLSUOrpny7cor1CS7m3e0rrCS', '2020-07-28 00:59:57', '2020-07-30 19:21:45'),
+(3, 'koke', 'koke@gmail.com', '$2y$10$awiokfthuCTTvcKa8GhtwuD0oBqsr3pqhYpY1jkOu7bcmEgh9LXYy', NULL, '2020-07-29 15:28:45', '2020-07-30 19:35:49'),
+(4, 'Juan', 'Juan@gmail.com', '123456', NULL, '2020-07-30 19:34:03', '2020-07-30 19:34:03');
 
 -- --------------------------------------------------------
 
@@ -283,9 +342,9 @@ ALTER TABLE `categoria`
 -- Indexes for table `detalle_ingreso`
 --
 ALTER TABLE `detalle_ingreso`
-  ADD PRIMARY KEY (`ingreso_idingreso`,`ingreso_proveedor_idproveedor`,`producto_idproducto`,`producto_categoria_idcategoria`),
-  ADD KEY `fk_detalle_ingreso_ingreso1_idx` (`ingreso_idingreso`,`ingreso_proveedor_idproveedor`),
-  ADD KEY `fk_detalle_ingreso_producto1_idx` (`producto_idproducto`,`producto_categoria_idcategoria`);
+  ADD PRIMARY KEY (`ingreso_idingreso`,`producto_idproducto`),
+  ADD KEY `fk_detalle_ingreso_ingreso_idx` (`ingreso_idingreso`),
+  ADD KEY `fk_detalle_ingreso_producto_idx` (`producto_idproducto`);
 
 --
 -- Indexes for table `detalle_venta`
@@ -319,8 +378,8 @@ ALTER TABLE `persona`
 -- Indexes for table `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`idproducto`,`categoria_idcategoria`),
-  ADD KEY `fk_producto_categoria1_idx` (`categoria_idcategoria`);
+  ADD PRIMARY KEY (`idproducto`),
+  ADD KEY `fk_producto_categoria1` (`categoria_idcategoria`);
 
 --
 -- Indexes for table `proveedor`
@@ -356,13 +415,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT for table `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `venta`
@@ -373,20 +432,6 @@ ALTER TABLE `venta`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `detalle_ingreso`
---
-ALTER TABLE `detalle_ingreso`
-  ADD CONSTRAINT `fk_detalle_ingreso_ingreso1` FOREIGN KEY (`ingreso_idingreso`,`ingreso_proveedor_idproveedor`) REFERENCES `ingreso` (`idingreso`, `proveedor_idproveedor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_detalle_ingreso_producto1` FOREIGN KEY (`producto_idproducto`,`producto_categoria_idcategoria`) REFERENCES `producto` (`idproducto`, `categoria_idcategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `detalle_venta`
---
-ALTER TABLE `detalle_venta`
-  ADD CONSTRAINT `fk_detalle_venta_venta1` FOREIGN KEY (`venta_idventa`) REFERENCES `venta` (`idventa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_venta_has_producto_producto1` FOREIGN KEY (`producto_idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `ingreso`

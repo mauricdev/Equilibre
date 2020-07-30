@@ -26,7 +26,7 @@ class proveedorController extends Controller
             ->where ('Estado','=','1')
             ->orderBy('idproveedor')
             ->paginate(10);
-            return view('almacen.proveedor.index',["proveedor"=>$proveedor,"searchText"=>$query]);
+            return view('almacen.ingreso.index',["proveedor"=>$proveedor,"searchText"=>$query]);
         }
     }
     public function create()

@@ -17,6 +17,8 @@ class ingeso extends Model
        'fechaHora', 
        'tipoComprobante',
        'numeroComprobante', 
+       'proveedor_idproveedor',
+       'Estado',
     ];
  
     protected $guarded =[

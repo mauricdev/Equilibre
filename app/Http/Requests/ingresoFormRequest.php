@@ -24,7 +24,6 @@ class ingresoFormRequest extends Request
     public function rules()
     {
         return [
-            'fechaHora' => 'required|max:100',
             'tipoComprobante' => 'required|max:100',
             'numeroComprobante' => 'required|max:100',
         ];

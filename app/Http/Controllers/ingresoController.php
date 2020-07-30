@@ -26,91 +26,92 @@ class ingresoController extends Controller
 
     public function index(Request $request)
     {
-        if ($request)
-        {
-            $query=trim($request->get('searchText'));
-            $Ingresos=DB::table('ingreso as i')
-            ->join('proveedor as p', 'i.proveedor_idproveedor','=','p.idproveedor ')
-            ->join('detalle_ingreso as d', 'i.idingreso','=','d.ingreso_idingreso')
-            ->select('i.idingreso','i.fechaHora','i.tipoComprobante','i.numeroComprobante','i.proveedor_idproveedor ','p.razonsocial',DB::raw('sum(d.cantidad*d.precio_compra) as total'))
-            ->where('i.numeroComprobante','LIKE','%'.$query.'%')
-            ->orderBy('i.idingreso','desc')
-            ->groupBy('i.idingreso','i.fechaHora','i.tipoComprobante','i.numeroComprobante','i.proveedor_idproveedor')
-            ->paginate(10);
-            return view('almacen.ingreso.index',["ingreso"=>$Ingresos,"searchText"=>$query]);
+        if ($request) {
+            $query = trim($request->get('searchText'));
+            $Ingresos = DB::table('ingreso as i')
+                ->join('proveedor as p', 'i.proveedor_idproveedor', '=', 'p.idproveedor')
+                ->join('detalle_ingreso as d', 'i.idingreso', '=', 'd.ingreso_idingreso')
+                ->select('i.idingreso as id', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
+                ->where('i.numeroComprobante', 'LIKE', '%' . $query . '%')
+                ->orderBy('i.idingreso', 'desc')
+                ->groupBy('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor')
+                ->paginate(10);
+            return view('almacen.ingreso.index', ["ingresos" => $Ingresos, "searchText" => $query]);
         }
     }
 
     public function create()
     {
-        $personas=DB::table('proveedor')->get();
-        $articulos=DB::table('producto as p')
-            ->select(DB::raw('CONCAT(p.idproducto," ",p.nombre)AS articulo'),'p.idproducto')
-            ->where('p.Estado','=','1')
+        $personas = DB::table('proveedor')->get();
+        $articulos = DB::table('producto as p')
+            ->select(DB::raw('CONCAT(p.idproducto," ",p.nombre)AS articulo'), 'p.idproducto')
+            ->where('p.Estado', '=', '1')
             ->get();
-        return view("almacen.ingreso.index",["personas"=>$personas,"articulos"=>$articulos]);
+        return view("almacen.ingreso.create", ["personas" => $personas, "articulos" => $articulos]);
     }
 
     public function store(ingresoFormRequest $request)
     {
-        try{
+        try {
             DB::beginTransaction();
-                $ingreso = new ingreso;
-                $ingreso->idingreso=$request->get('idingreso');
-                $ingreso->proveedor_idproveedor=$request->get('proveedor_idproveedor');
-                $ingreso->tipoComprobante=$request->get('tipoComprobante');
-                $ingreso->numeroComprobante=$request->get('numeroComprobante');                
-                $myTime = Carbon::now('America/Santiago');
-                $ingreso->fechHora = $myTime->toDateTimeString();
-                $ingreso->Estado = 1;                
-                $ingreso->save();
+            $ingreso = new ingreso;
 
-                $idArticulo = $request->get('ingreso_idingreso');
-                $cantidad   = $request->get('cantidad');
-                $precio_compra= $request->get('precio_compra');
+            $ingreso->proveedor_idproveedor = $request->get('proveedor_idproveedor ');
+            $ingreso->tipoComprobante = $request->get('tipoComprobante');
+            $ingreso->numeroComprobante = $request->get('numeroComprobante');
+            $mytime = Carbon::now('America/Bogota');
+            $ingreso->fecha_hora = $mytime->toDateTimeString();
+            $ingreso->Estado = 1;
+            $ingreso->save();
 
-                $cont = 0;
+            $idarticulo = $request->get('pidarticulo');
+            $cantidad = $request->get('cantidad');
+            $precio_compra = $request->get('precio_compra');
 
-                while($cont < count($idArticulo))
-                {
-                    $detalle = new detalle_ingeso();
-                    $detalle->ingreso_idingreso= $ingreso->idingreso;
-                    $detalle->producto_idproducto = $idArticulo[$cont];
-                    $detalle->cantidad =  $cantidad[$cont]; 
-                    $detalle->precio_compra = $precio_compra[$cont]; 
-                    $detalle->save();
-                    $cont = $cont + 1 ;
-                }
+            $cont = 0;
+
+            while ($cont < count($idarticulo)) {
+                $detalle = new detalleIngreso();
+                $detalle->idingreso = $ingreso->idingreso;
+                $detalle->ingreso_proveedor_idproveedor = $ingreso->proveedor_idproveedor;
+                $detalle->producto_categoria_idcategoria  = 1;
+                $detalle->producto_idproducto = $idarticulo[$cont];
+                $detalle->cantidad = $cantidad[$cont];
+                $detalle->precio_compra = $precio_compra[$cont];
+                $detalle->save();
+                $cont = $cont + 1;
+            }
 
             DB::commit();
-        }catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollback();
+            return back()->withError($e->getMessage())->withInput();
         }
-        return redirect('almacen/ingreso');
+
+        return Redirect::to('almacen/ingreso');
     }
 
     public function show($id)
     {
-            $Ingresos=DB::table('ingreso as i')
-            ->join('proveedor as p', 'i.proveedor_idproveedor','=','p.idproveedor ')
-            ->join('detalle_ingreso as d', 'i.idingreso','=','d.ingreso_idingreso')
-            ->select('i.idingreso','i.fechaHora','i.tipoComprobante','i.numeroComprobante','i.proveedor_idproveedor ','p.razonsocial',DB::raw('sum(d.cantidad*d.precio_compra) as total'))
-            ->where('i.idingreso','=',$id)
-            ->first();    
+        $Ingresos = DB::table('ingreso as i')
+            ->join('proveedor as p', 'i.proveedor_idproveedor', '=', 'p.idproveedor')
+            ->join('detalle_ingreso as d', 'i.idingreso', '=', 'd.ingreso_idingreso')
+            ->select('i.idingreso', 'i.fechaHora', 'i.tipoComprobante', 'i.numeroComprobante', 'i.proveedor_idproveedor', 'p.razonsocial', DB::raw('sum(d.cantidad*d.precio_compra) as total'))
+            ->where('i.idingreso', '=', $id)
+            ->first();
 
-            $detalle =DB::table('detalle_ingreso as d')   
-            ->join('producto as p','d.producto_idproducto','=','p.idproducto')
-            ->select('p.nombre as producto','d.cantidad','d.precio_compra')
-            ->where('d.ingreso_idingreso','=',$id)
+        $detalle = DB::table('detalle_ingreso as d')
+            ->join('producto as p', 'd.producto_idproducto', '=', 'p.idproducto')
+            ->select('p.nombre as producto', 'd.cantidad', 'd.precio_compra')
+            ->where('d.ingreso_idingreso', '=', $id)
             ->get();
-        return view("almacen.ingreso.show",["ingreso"=>$Ingresos,"detalle"=>$detalle]);
+        return view("almacen.ingreso.show", ["ingreso" => $Ingresos, "detalle" => $detalle]);
     }
 
     public function destroy($id)
     {
         $ingreso = ingreso::findOrFail($id);
-        $ingreso->Estado='1';
+        $ingreso->Estado = '1';
         $ingreso->update();
         return redirect('almacen/ingreso');
     }

@@ -104,4 +104,6 @@ class ArticuloController extends Controller
         $Articulos->update();
         return Redirect::to('almacen/articulo');
     }
+
+    
 }

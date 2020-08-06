@@ -15,6 +15,31 @@ Route::get('/', function () {
     return view('almacen/inicio/index');
 });
 
+Route::get('/tienda', [
+    'uses' => 'ProductsController@getTienda',
+    'as' => 'almacen.tienda.index'
+]);
+
+Route::get('/agregar-al-carro/{id}', [
+    'uses' => 'ProductsController@getAddtocart',
+    'as' => 'almacen.tienda.addToCart'
+]);
+
+Route::get('/remover/{id}/{total}',[
+    'uses' => 'ProductsController@getRemove',
+    'as' => 'almacen.tienda.remover'
+]);
+
+Route::get('/removeritem/{id}', [
+    'uses' => 'ProductsController@getRemoveAll',
+    'as' => 'almacen.tienda.removeritem'
+]);
+
+Route::get('/carro-compra', [
+    'uses' => 'ProductsController@getCarro',
+    'as' => 'almacen.tienda.carroCompra'
+]);
+
 
 Route::auth();
 

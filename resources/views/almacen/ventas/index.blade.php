@@ -2,7 +2,7 @@
 @section ('contenido')
 <div class="row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Listado de Ventas</h3>
+		<h3>Listado de Ventas <a href="/exportarVenta"><button class="btn btn-success">Reporte</button></a></h3>
 		@include('almacen.ventas.search')
 	</div>
 </div>

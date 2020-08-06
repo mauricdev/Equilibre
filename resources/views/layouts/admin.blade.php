@@ -203,6 +203,9 @@
     @stack('scripts')
     <!-- Bootstrap 3.3.5 -->
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/FileSaver.min.js')}}"></script>
+    <script src="{{asset('js/tableexport.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   
     <!-- AdminLTE App -->

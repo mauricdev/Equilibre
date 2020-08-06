@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use equilibre\Http\Requests\ventasFormRequest;
 use DB;
 use equilibre\detalle_venta;
+use Response;
 
 class ventasController extends Controller
 {
@@ -76,4 +77,32 @@ class ventasController extends Controller
         $ventas->update();
         return Redirect::to('almacen/ventas');
     }
+
+    public function export()
+    {
+        $headers = [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+        ,   'Content-type'        => 'text/csv'
+        ,   'Content-Disposition' => 'attachment; filename=Ventas.csv'
+        ,   'Expires'             => '0'
+        ,   'Pragma'              => 'public'
+    ];
+
+    $list = Ventas::all()->toArray();
+
+    # add headers for each column in the CSV download
+    array_unshift($list, array_keys($list[0]));
+
+   $callback = function() use ($list) 
+    {
+        $FH = fopen('php://output', 'w');
+        foreach ($list as $row) { 
+            fputcsv($FH, $row);
+        }
+        fclose($FH);
+    };
+
+    return Response::stream($callback, 200, $headers);
+    }
+
 }

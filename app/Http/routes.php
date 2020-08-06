@@ -30,4 +30,14 @@ Route::resource('auth/login','loginController');
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-Route::get('/{slug?}', 'HomeController@index');
+//Route::get('/{slug?}', 'HomeController@index');
+Route::get('/exportar', 'HomeController@export');
+
+
+//Reportes
+Route::get('/exportarArticulo', 'ArticuloController@export');
+Route::get('/exportarCategoria', 'CategoriaController@export');
+Route::get('/exportarIngresos', 'ingresoController@export');
+Route::get('/exportarProveedores', 'proveedorController@export');
+Route::get('/exportarVenta', 'ventasController@export');
+Route::get('/exportarPersona', 'personaController@export');

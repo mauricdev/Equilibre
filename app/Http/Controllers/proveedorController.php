@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Redirect;
 use equilibre\Http\Requests\proveedorFormRequest;
 use DB;
 use equilibre\User;
+use Response;
+
 
 class proveedorController extends Controller
 {
@@ -79,5 +81,32 @@ class proveedorController extends Controller
         $proveedor->estado='0';
         $proveedor->update();
         return Redirect::to('almacen/proveedor');
+    }
+
+    public function export()
+    {
+        $headers = [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+        ,   'Content-type'        => 'text/csv'
+        ,   'Content-Disposition' => 'attachment; filename=Proveedores.csv'
+        ,   'Expires'             => '0'
+        ,   'Pragma'              => 'public'
+    ];
+
+    $list = Provedor::all()->toArray();
+
+    # add headers for each column in the CSV download
+    array_unshift($list, array_keys($list[0]));
+
+   $callback = function() use ($list) 
+    {
+        $FH = fopen('php://output', 'w');
+        foreach ($list as $row) { 
+            fputcsv($FH, $row);
+        }
+        fclose($FH);
+    };
+
+    return Response::stream($callback, 200, $headers);
     }
 }

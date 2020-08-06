@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use equilibre\Http\Requests\ArticuloFormRequest;
 use DB;
+use Response;
 
 class ArticuloController extends Controller
 {
@@ -103,5 +104,31 @@ class ArticuloController extends Controller
         $Articulos->estado='Inactivo';
         $Articulos->update();
         return Redirect::to('almacen/articulo');
+    }
+    public function export()
+    {
+        $headers = [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+        ,   'Content-type'        => 'text/csv'
+        ,   'Content-Disposition' => 'attachment; filename=Productos.csv'
+        ,   'Expires'             => '0'
+        ,   'Pragma'              => 'public'
+    ];
+
+    $list = Articulo::all()->toArray();
+
+    # add headers for each column in the CSV download
+    array_unshift($list, array_keys($list[0]));
+
+   $callback = function() use ($list) 
+    {
+        $FH = fopen('php://output', 'w');
+        foreach ($list as $row) { 
+            fputcsv($FH, $row);
+        }
+        fclose($FH);
+    };
+
+    return Response::stream($callback, 200, $headers);
     }
 }

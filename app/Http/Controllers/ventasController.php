@@ -50,11 +50,13 @@ class ventasController extends Controller
         ->join('venta as v','d.venta_idventa','=','v.idventa')
         ->join('persona as p','d.venta_persona_rut','=','p.rut')
         ->join('producto as x','d.producto_idproducto','=','x.idproducto') 
-        ->select('d.venta_idventa','d.venta_persona_rut as persona','p.nombre as nombre','d.producto_idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total')
+        ->select('d.venta_idventa','d.venta_persona_rut as persona','p.nombre as nombre','p.apellidos as apellidos','d.producto_idproducto','x.nombre as producto','d.cantidad','d.precio_unitario','d.precio_total','v.total_venta as total')
         ->where('d.venta_idventa','LIKE','%'.$id.'%')
         ->orderBy('d.venta_idventa')
         ->paginate(7);
-        return view("almacen.ventas.edit",["detalle"=>$detalle]);
+
+
+        return view("almacen.ventas.edit",["detalle"=>$detalle ,"venta"=>Ventas::findOrFail($id) ]);
     }
     public function update(proveedorFormRequest $request,$id)
     {

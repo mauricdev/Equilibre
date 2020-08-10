@@ -113,6 +113,7 @@ class ArticuloController extends Controller
         ,   'Content-Disposition' => 'attachment; filename=Productos.csv'
         ,   'Expires'             => '0'
         ,   'Pragma'              => 'public'
+        ,   'Content-Transfer-Encoding' => 'UTF-8'
     ];
 
     $list = Articulo::all()->toArray();

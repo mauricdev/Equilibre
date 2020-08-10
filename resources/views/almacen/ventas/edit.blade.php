@@ -1,51 +1,66 @@
 @extends ('layouts.admin')
 @section ('contenido')
+
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<h3>Detalle de la venta</h3>
-		@if (count($errors)>0)
-		<div class="alert alert-danger">
-			<ul>
-				@foreach ($errors->all() as $error)
-				<li>{{$error}}</li>
-				@endforeach
-			</ul>
+	<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+		<div class="form-group">
+			<label for="nombre">ID de Venta</label>
+			<p>{{$venta->idventa}}</p>
 		</div>
-		@endif
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="table-responsive">
-					<table class="table table-striped table-bordered table-condensed table-hover">
-						<thead>
-							<th>Id venta </th>
-							<th>Rut</th>
-							<th>Nombre</th>
-							<th>Codigo Producto</th>
-							<th>Producto</th>
-							<th>Cantidad</th>
-							<th>Precio Unitario</th>
-							<th>Precio Total</th>
-						</thead>
-						@foreach ($detalle as $det)
-						<tr>
-							<td>{{ $det->venta_idventa}}</td>
-							<td>{{ $det->persona}}</td>
-							<td>{{ $det->nombre}}</td>
-							<td>{{ $det->producto_idproducto}}</td>
-							<td>{{ $det->producto}}</td>
-							<td>{{ $det->cantidad}}</td>
-							<td>{{ $det->precio_unitario}}</td>
-							<td>{{ $det->precio_total}}</td>
-						</tr>
-						@endforeach
-					</table>
-				</div>
-				{{$detalle->render()}}
-			</div>
+	</div>
+	<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+		<div class="form-group">
+			<label for="nombre">Fecha</label>
+			<p>{{date('Y-m-d H:i:s',strtotime($venta->fechaHora))}}</p>
 		</div>
-<div class="col-4">
-<a href="{{URL::action('ventasController@index')}}"><button class="btn btn-success">Volver</button></a>
-</div>
+	</div>
+	<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+		<div class="form-group">
+			<label for="nombre">Cliente</label>
+			<p>{{$venta->persona_rut1}}</p>
+		</div>
 	</div>
 </div>
+<div class="row">
+	<div class="panel panel-primary">
+		<div class="panel-body">
+
+			<table class="table table-striped table-bordered table-condensed table-hover">
+				<thead style="background-color: #A9D0F5;">
+					<th>Nombre Cliente</th>
+					<th>Codigo Producto</th>
+					<th>Producto</th>
+					<th>Cantidad</th>
+					<th>Precio Unitario</th>
+					<th>Subtotal</th>
+				</thead>
+				<tfoot>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th>
+						<h4 id="total">${{$venta->total_venta}}</h4>
+
+					</th>
+				</tfoot>
+				<tbody>
+					@foreach ($detalle as $det)
+					<tr>
+						<td>{{ $det->nombre. $det->apellidos}}</td>
+						<td>{{ $det->producto_idproducto}}</td>
+						<td>{{ $det->producto}}</td>
+						<td>{{ $det->cantidad}}</td>
+						<td>{{ $det->precio_unitario}}</td>
+						<td>{{ $det->precio_total}}</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>
+
 @endsection

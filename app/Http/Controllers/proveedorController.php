@@ -91,6 +91,7 @@ class proveedorController extends Controller
         ,   'Content-Disposition' => 'attachment; filename=Proveedores.csv'
         ,   'Expires'             => '0'
         ,   'Pragma'              => 'public'
+        ,   'Content-Transfer-Encoding' => 'UTF-8'
     ];
 
     $list = Provedor::all()->toArray();

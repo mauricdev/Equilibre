@@ -41,14 +41,14 @@ Route::get('/carro-compra', [
 ]);
 
 
-
-
-/* flow */
-Route::get('/pago', [
-    'uses' => 'FlowController@pago',
-    'as' => 'pago'
+Route::get('/cliente',[
+    'uses' => 'ProductsController@cliente',
+    'as' => 'cliente'
 ]);
 
+/* flow */
+
+Route::post('pago', 'FlowController@pago')->name('pago');
 
 Route::post('orden', 'FlowController@orden')->name('orden');
 

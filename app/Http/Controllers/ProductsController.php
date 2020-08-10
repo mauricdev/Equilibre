@@ -68,4 +68,9 @@ class ProductsController extends Controller
         return view('almacen.tienda.carro-compra',['products' => $cart->items,'preciototal' => $cart->preciototal]);
 
     }
+
+    public function cliente()
+    {
+        return view('cliente');
+    }
 }

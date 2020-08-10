@@ -9,6 +9,7 @@
     Monto: {{ $order['amount'] }}<br>
     Descripción: {{ $order['subject'] }}<br>
     Email pagador (opcional): {{ $order['email'] }}<br>
+    rut pagador: {{ $order['opcionales']->rut}}
     <br>
     <form method="POST" action="https://sandbox.flow.cl/app/web/pay.php">
 

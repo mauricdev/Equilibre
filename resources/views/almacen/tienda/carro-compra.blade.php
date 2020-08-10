@@ -46,7 +46,7 @@
         <hr>
         <div class="row">
             <div class="col-sm-12">
-                <button type="button" class="btn btn-success">Pagar</button>
+                <a type="button"  class="btn btn-success" href="{{ route('cliente')}}">Pagar</a>
             </div>
         </div>
     @else

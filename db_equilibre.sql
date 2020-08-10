@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 30, 2020 at 09:52 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 10-08-2020 a las 12:44:08
+-- Versión del servidor: 10.4.13-MariaDB
+-- Versión de PHP: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_equilibre`
+-- Base de datos: `db_equilibre`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categoria`
+-- Estructura de tabla para la tabla `categoria`
 --
 
 CREATE TABLE `categoria` (
@@ -36,7 +36,7 @@ CREATE TABLE `categoria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `categoria`
+-- Volcado de datos para la tabla `categoria`
 --
 
 INSERT INTO `categoria` (`idcategoria`, `nombre`, `descripcion`, `estado`, `categoriacol`) VALUES
@@ -47,7 +47,7 @@ INSERT INTO `categoria` (`idcategoria`, `nombre`, `descripcion`, `estado`, `cate
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detalle_ingreso`
+-- Estructura de tabla para la tabla `detalle_ingreso`
 --
 
 CREATE TABLE `detalle_ingreso` (
@@ -58,7 +58,7 @@ CREATE TABLE `detalle_ingreso` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `detalle_ingreso`
+-- Volcado de datos para la tabla `detalle_ingreso`
 --
 
 INSERT INTO `detalle_ingreso` (`ingreso_idingreso`, `producto_idproducto`, `cantidad`, `precio_compra`) VALUES
@@ -80,7 +80,7 @@ INSERT INTO `detalle_ingreso` (`ingreso_idingreso`, `producto_idproducto`, `cant
 (68, 780431289642, 1, 1);
 
 --
--- Triggers `detalle_ingreso`
+-- Disparadores `detalle_ingreso`
 --
 DELIMITER $$
 CREATE TRIGGER `tr_updStockIngreso` AFTER INSERT ON `detalle_ingreso` FOR EACH ROW BEGIN
@@ -93,11 +93,11 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detalle_venta`
+-- Estructura de tabla para la tabla `detalle_venta`
 --
 
 CREATE TABLE `detalle_venta` (
-  `producto_idproducto` int(50) NOT NULL,
+  `producto_idproducto` bigint(50) NOT NULL,
   `cantidad` float NOT NULL,
   `precio_unitario` float NOT NULL,
   `precio_total` float NOT NULL,
@@ -105,10 +105,23 @@ CREATE TABLE `detalle_venta` (
   `venta_persona_rut` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `detalle_venta`
+--
+
+INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario`, `precio_total`, `venta_idventa`, `venta_persona_rut`) VALUES
+(780431289642, 1, 70000, 70000, 6, '19677005-4'),
+(780431289642, 1, 70000, 70000, 7, '19677005-4'),
+(780431289642, 3, 70000, 210000, 10, '19677005-4'),
+(780432874121, 1, 20000, 20000, 6, '19677005-4'),
+(780432874121, 1, 20000, 20000, 7, '19677005-4'),
+(780432874121, 1, 20000, 20000, 10, '19677005-4'),
+(780784574845, 1, 200000, 200000, 7, '19677005-4');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ingreso`
+-- Estructura de tabla para la tabla `ingreso`
 --
 
 CREATE TABLE `ingreso` (
@@ -121,7 +134,7 @@ CREATE TABLE `ingreso` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `ingreso`
+-- Volcado de datos para la tabla `ingreso`
 --
 
 INSERT INTO `ingreso` (`idingreso`, `fechaHora`, `tipoComprobante`, `numeroComprobante`, `proveedor_idproveedor`, `Estado`) VALUES
@@ -169,7 +182,7 @@ INSERT INTO `ingreso` (`idingreso`, `fechaHora`, `tipoComprobante`, `numeroCompr
 -- --------------------------------------------------------
 
 --
--- Table structure for table `migrations`
+-- Estructura de tabla para la tabla `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -178,7 +191,7 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `migrations`
+-- Volcado de datos para la tabla `migrations`
 --
 
 INSERT INTO `migrations` (`migration`, `batch`) VALUES
@@ -188,7 +201,7 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `password_resets`
+-- Estructura de tabla para la tabla `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -200,7 +213,7 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `persona`
+-- Estructura de tabla para la tabla `persona`
 --
 
 CREATE TABLE `persona` (
@@ -214,7 +227,7 @@ CREATE TABLE `persona` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `persona`
+-- Volcado de datos para la tabla `persona`
 --
 
 INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciudad`, `telefono`) VALUES
@@ -225,7 +238,7 @@ INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `producto`
+-- Estructura de tabla para la tabla `producto`
 --
 
 CREATE TABLE `producto` (
@@ -244,7 +257,7 @@ CREATE TABLE `producto` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `producto`
+-- Volcado de datos para la tabla `producto`
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`, `precio_venta`, `precio_descuento`, `stock`, `stock_critico`, `descuento`, `imagen`, `Estado`, `categoria_idcategoria`) VALUES
@@ -256,7 +269,7 @@ INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `proveedor`
+-- Estructura de tabla para la tabla `proveedor`
 --
 
 CREATE TABLE `proveedor` (
@@ -272,7 +285,7 @@ CREATE TABLE `proveedor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `proveedor`
+-- Volcado de datos para la tabla `proveedor`
 --
 
 INSERT INTO `proveedor` (`idproveedor`, `razonsocial`, `direccion`, `ciudad`, `pais`, `telefono`, `correo`, `descripcion`, `Estado`) VALUES
@@ -285,7 +298,7 @@ INSERT INTO `proveedor` (`idproveedor`, `razonsocial`, `direccion`, `ciudad`, `p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -299,18 +312,18 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `users`
+-- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Mauricio Gutierrez S', 'mauric.gutierr1995@gmail.com', '$2y$10$UNPJ58foXdKAGk2Qz./jE.jpDrg.qDEwGzyJOxzkwSebZYSKNXrZS', 'YM0rD4KHsezBWMF1CVEjuKC2sZZYOg5MDb9PLSUOrpny7cor1CS7m3e0rrCS', '2020-07-28 00:59:57', '2020-07-30 19:21:45'),
-(3, 'koke', 'koke@gmail.com', '$2y$10$awiokfthuCTTvcKa8GhtwuD0oBqsr3pqhYpY1jkOu7bcmEgh9LXYy', NULL, '2020-07-29 15:28:45', '2020-07-30 19:35:49'),
+(3, 'koke', 'koke@gmail.com', '$2y$10$eqrYWFdAAL1mAPa/xXYi9.dpYyVNvgUsPzMSlnZvgohA0XVTBtScq', 'PT0Dahzl6yxcpgkiOvvYKihsrQsNzhOvXk26nYBtWijA6Dx1cGWFJFjG01O2', '2020-07-29 15:28:45', '2020-08-10 09:40:55'),
 (4, 'Juan', 'Juan@gmail.com', '123456', NULL, '2020-07-30 19:34:03', '2020-07-30 19:34:03');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `venta`
+-- Estructura de tabla para la tabla `venta`
 --
 
 CREATE TABLE `venta` (
@@ -318,28 +331,32 @@ CREATE TABLE `venta` (
   `total_venta` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
   `fechaHora` datetime(6) NOT NULL,
   `Estado` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `persona_rut1` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
+  `persona_rut1` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `n_orden` int(11) NOT NULL,
+  `token` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `venta`
+-- Volcado de datos para la tabla `venta`
 --
 
-INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`) VALUES
-(1, '1000000', '2020-07-28 13:53:00.000000', '1', '18821824-5');
+INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`, `n_orden`, `token`) VALUES
+(6, '90000', '2020-08-10 05:10:37.000000', '1', '19677005-4', 302329, 'B1A6B81C6BAFD5AFF5D125B10AC9E62BFA1E20EK'),
+(7, '5000', '2020-08-10 06:25:54.000000', '1', '19677005-4', 302345, '05B7132695121175A9FFD8EA42F38BDA99CA4A9Z'),
+(10, '230000', '2020-08-10 06:33:41.000000', '1', '19677005-4', 302347, '6CFF5EFE1A7DC52A8A510E055A07262BC9E3018C');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `categoria`
+-- Indices de la tabla `categoria`
 --
 ALTER TABLE `categoria`
   ADD PRIMARY KEY (`idcategoria`);
 
 --
--- Indexes for table `detalle_ingreso`
+-- Indices de la tabla `detalle_ingreso`
 --
 ALTER TABLE `detalle_ingreso`
   ADD PRIMARY KEY (`ingreso_idingreso`,`producto_idproducto`),
@@ -347,106 +364,106 @@ ALTER TABLE `detalle_ingreso`
   ADD KEY `fk_detalle_ingreso_producto_idx` (`producto_idproducto`);
 
 --
--- Indexes for table `detalle_venta`
+-- Indices de la tabla `detalle_venta`
 --
 ALTER TABLE `detalle_venta`
-  ADD PRIMARY KEY (`producto_idproducto`,`venta_idventa`,`venta_persona_rut`),
+  ADD PRIMARY KEY (`producto_idproducto`,`venta_idventa`,`venta_persona_rut`) USING BTREE,
   ADD KEY `fk_venta_has_producto_producto1_idx` (`producto_idproducto`),
   ADD KEY `fk_detalle_venta_venta1_idx` (`venta_idventa`,`venta_persona_rut`);
 
 --
--- Indexes for table `ingreso`
+-- Indices de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
   ADD PRIMARY KEY (`idingreso`,`proveedor_idproveedor`),
   ADD KEY `fk_ingreso_proveedor1_idx` (`proveedor_idproveedor`);
 
 --
--- Indexes for table `password_resets`
+-- Indices de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`),
   ADD KEY `password_resets_token_index` (`token`);
 
 --
--- Indexes for table `persona`
+-- Indices de la tabla `persona`
 --
 ALTER TABLE `persona`
   ADD PRIMARY KEY (`rut`);
 
 --
--- Indexes for table `producto`
+-- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`idproducto`),
   ADD KEY `fk_producto_categoria1` (`categoria_idcategoria`);
 
 --
--- Indexes for table `proveedor`
+-- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
   ADD PRIMARY KEY (`idproveedor`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Indexes for table `venta`
+-- Indices de la tabla `venta`
 --
 ALTER TABLE `venta`
   ADD PRIMARY KEY (`idventa`,`persona_rut1`),
   ADD KEY `fk_venta_persona1_idx` (`persona_rut1`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `categoria`
+-- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
   MODIFY `idcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `ingreso`
+-- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
   MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `venta`
+-- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `ingreso`
+-- Filtros para la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
   ADD CONSTRAINT `fk_ingreso_proveedor1` FOREIGN KEY (`proveedor_idproveedor`) REFERENCES `proveedor` (`idproveedor`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `producto`
+-- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
   ADD CONSTRAINT `fk_producto_categoria1` FOREIGN KEY (`categoria_idcategoria`) REFERENCES `categoria` (`idcategoria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `venta`
+-- Filtros para la tabla `venta`
 --
 ALTER TABLE `venta`
   ADD CONSTRAINT `fk_venta_persona1` FOREIGN KEY (`persona_rut1`) REFERENCES `persona` (`rut`) ON DELETE NO ACTION ON UPDATE NO ACTION;

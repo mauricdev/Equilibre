@@ -8,14 +8,47 @@ use equilibre\Http\Requests;
 
 use equilibre\Flow;
 
+use equilibre\Cart;
+
+use equilibre\Persona;
+
+use Session;
+
+use equilibre\Ventas;
+use Illuminate\Support\Facades\Redirect;
+use equilibre\Http\Requests\ventasFormRequest;
+use DB;
+use equilibre\detalle_venta;
+use Response;
+
 class FlowController extends Controller
 {
-    public function pago()
+    public function pago(Request $request)
     {
-        //$idventa = Ventas::latest('idventa')->first();
-        //$idventa++;
-        //return view('pago.index',['idventa' => $idventa]);
-        return view('pago');
+        $idventa = Ventas::latest('idventa')->first();
+        $idventa = $idventa->idventa;
+        $idventa++;
+        
+        $rut = $request->rut;
+
+        $carro = Session::get('cart');
+        $carro = new Cart($carro);
+
+        
+
+        $monto=$carro->preciototal;
+        $email = 'email@email.com';
+        $pago = [
+            'idventa' => $idventa,
+            'monto' => $monto,
+            'descripcion' => 'Venta Online Equilibre N°'.$idventa,
+            'email' => $email,
+            'rut' => $rut,
+        ];
+
+        //dd($pago);
+        
+        return view('pago')->with(['pago'=>$pago]);
     }
 
 
@@ -30,10 +63,13 @@ class FlowController extends Controller
      */
     public function orden(Request $request)
     {
-        /*$optional = [
-            "rut" => "19677005-4",
-        ];*/
         
+
+        $optional = array(
+            "rut" => $request->rut
+            //"otroDato" => "otroDato"
+        );
+        $optional = json_encode($optional);
         $orden = [
             //SEGUIR EL ORDEN Y NOMBRE DE CLAVES COMO SE MUESTRA A CONTINUACION
             'commerceOrder'  => $request->orden,
@@ -43,9 +79,9 @@ class FlowController extends Controller
             //'optional' => $optional
             // Opcional: El medio de pago correspondera al ubicado en la configuracion
         ];
-
+        //dd($optional);
         // Genera una nueva Orden de Pago, Flow la firma y retorna un paquete de datos firmados
-        $orden_generada = Flow::GenerateFlowOrder($orden);
+        $orden_generada = Flow::GenerateFlowOrder($orden,$optional);
 
         // Si desea enviar el medio de pago usar la siguiente línea
         //$orden['flow_pack'] = Flow::new_order($orden['orden_compra'], $orden['monto'], $orden['concepto'], $orden['email_pagador'], $orden['medio_pago']);
@@ -152,7 +188,15 @@ class FlowController extends Controller
 
     public function retorno(Request $request){
         $response = Flow::getStatus($request->token);
+        $carro = Session::get('cart');
+        $carro = new Cart($carro);
+        if($carro == null || $response == null ){
+            return view('flow.sinacceso');
+        }
+        $carro = $carro->items;
         //dd($response);
+        //dd($carro);
+       
         if($response->status!=2){
             $orden = [
                 'orden_compra'  => $response->flowOrder,
@@ -165,12 +209,47 @@ class FlowController extends Controller
             return view('flow.fracaso', $orden);
         }else{
             $orden = [
-                'flowOrder'     => $response->flowOrder,
-                'commerceOrder' => $response->commerceOrder,
-                'amount'        => $response->amount,
-                'subject'       => $response->subject,
-                'payer'         => $response->payer,
+                
+                'idventa'       => $response->commerceOrder,
+                'total_venta'   => $response->amount,
+                'fechaHora'     => $response->paymentData->date,
+                'estado'        => 1,
+                'persona_rut1'  => $response->optional->rut,
+                'n_orden'       => $response->flowOrder,
+                'token'         => $request->token,
+                'detalle'       => $carro
             ];
+
+            //dd($orden);
+            
+            $venta= new Ventas;
+            $venta->idventa=$orden['idventa'];
+            $venta->total_venta=$orden['total_venta'];
+            $venta->fechaHora=$orden['fechaHora'];
+            $venta->estado=$orden['estado'];
+            $venta->persona_rut1=$orden['persona_rut1'];
+            $venta->n_orden= $orden['n_orden'];
+            $venta->token=$orden['token'];
+            $venta->save();
+            //dd($venta);
+            //$a = array(new detalle_venta);
+            foreach($orden['detalle'] as $producto){
+                $detalle_venta = new detalle_venta;
+                $detalle_venta->producto_idproducto=$producto['item']['idproducto'];
+                
+                $detalle_venta->cantidad=$producto['qty'];
+                $detalle_venta->precio_unitario=$producto['precio_unitario'];
+                $detalle_venta->precio_total=$producto['precio'];
+                $detalle_venta->venta_idventa=$orden['idventa'];
+                $detalle_venta->venta_persona_rut=$orden['persona_rut1'];
+                
+                $detalle_venta->save();
+                //array_push($a,$detalle_venta);
+            }
+            //dd($a);
+            //dd($detalle_venta);
+            DB::commit();
+            Session::forget('cart');
             return view('flow.exito')->with(["FlowOrder" => $orden]);
         }
         dd($response->status);

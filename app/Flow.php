@@ -23,12 +23,12 @@ class Flow {
         $this->params = [];
     }
 
-    public static function GenerateFlowOrder($params)
+    public static function GenerateFlowOrder($params,$optional)
     {
         //return self::flow_validate_array($params);
         try{
             $url = config('flow.url_api')."/payment/create";
-            $params = self::flow_validate_order($params);
+            $params = self::flow_validate_order($params,$optional);
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -48,7 +48,8 @@ class Flow {
             }
 
             $resp = ["response" => json_decode($response)];
-            $params = $params + $resp;
+            $opcionales = ["opcionales" => json_decode($optional)];
+            $params = $params + $opcionales +$resp;
 
             return  $params;
 
@@ -59,16 +60,16 @@ class Flow {
         }
     }
 
-    public static function flow_validate_order($params)
+    public static function flow_validate_order($params,$optional)
     {
         $key = ["apiKey" => urlencode(config('flow.api_key'))];
         $method = ["paymentMethod" => config('flow.medioPago')];
         $confirm = ["urlConfirmation" => self::generarUrl(config('flow.url_confirmacion'))];
         $return = ["urlReturn" => self::generarUrl(config('flow.url_retorno'))];
+        
+        $params = $key + $params + $method + $confirm + $return + ["optional" =>$optional];
 
-        $params = $key + $params + $method + $confirm + $return;
-
-
+        //dd($params);
         $signature = self::flow_sign($params);
         $params["s"] = $signature;
 

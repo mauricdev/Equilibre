@@ -1,0 +1,10 @@
+@extends('layouts.tienda')
+
+@section('content')
+    <h1>Página de éxito de Comercio</h1>
+    Su pago se ha realizado exitosamente<br>
+    <br>
+    Orden de Compra: {{ $FlowOrder['flowOrder'] }}<br>
+    <br>
+    Gracias por su compra
+@endsection

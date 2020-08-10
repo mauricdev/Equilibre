@@ -24,7 +24,7 @@ class personaFormRequest extends Request
     public function rules()
     {
         return [
-            'rut' => 'max:50',
+            'rut' => 'max:150',
             'nombre' => 'required|max:50',
             'apellidos' => 'required|max:50',
             'correo' => 'required|max:50',

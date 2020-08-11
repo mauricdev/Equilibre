@@ -37,6 +37,9 @@ class FlowController extends Controller
         
 
         $monto=$carro->preciototal;
+
+        
+
         $email = 'email@email.com';
         $pago = [
             'idventa' => $idventa,
@@ -44,6 +47,7 @@ class FlowController extends Controller
             'descripcion' => 'Venta Online Equilibre N°'.$idventa,
             'email' => $email,
             'rut' => $rut,
+            'carro' => $carro->items,
         ];
 
         //dd($pago);

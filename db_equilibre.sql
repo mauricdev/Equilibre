@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-08-2020 a las 12:44:08
+-- Tiempo de generación: 11-08-2020 a las 09:15:32
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -113,10 +113,25 @@ INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario
 (780431289642, 1, 70000, 70000, 6, '19677005-4'),
 (780431289642, 1, 70000, 70000, 7, '19677005-4'),
 (780431289642, 3, 70000, 210000, 10, '19677005-4'),
+(780431289642, 1, 70000, 70000, 11, '19677005-4'),
 (780432874121, 1, 20000, 20000, 6, '19677005-4'),
 (780432874121, 1, 20000, 20000, 7, '19677005-4'),
 (780432874121, 1, 20000, 20000, 10, '19677005-4'),
-(780784574845, 1, 200000, 200000, 7, '19677005-4');
+(780432874121, 2, 20000, 40000, 11, '19677005-4'),
+(780432874121, 2, 20000, 40000, 12, '19677005-4'),
+(780784574845, 1, 200000, 200000, 7, '19677005-4'),
+(780784574845, 1, 200000, 200000, 12, '19677005-4');
+
+--
+-- Disparadores `detalle_venta`
+--
+DELIMITER $$
+CREATE TRIGGER `tr_updStockVenta` AFTER INSERT ON `detalle_venta` FOR EACH ROW BEGIN
+     UPDATE producto SET stock = stock - NEW.cantidad
+        WHERE producto.idproducto =NEW.producto_idproducto;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -262,8 +277,8 @@ CREATE TABLE `producto` (
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`, `precio_venta`, `precio_descuento`, `stock`, `stock_critico`, `descuento`, `imagen`, `Estado`, `categoria_idcategoria`) VALUES
 (780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 102.5, 100, 0, 'pesa.jpg', 1, 3),
-(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, 120, 20, 0, 'pelota_morada.jpg', 1, 1),
-(780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 100, 20, 0, 'camilla.jpg', 1, 1),
+(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, 118, 20, 0, 'pelota_morada.jpg', 1, 1),
+(780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 90, 20, 0, 'camilla.jpg', 1, 1),
 (780987256314, 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 20, 5, 0, 'camilla-de-masaje.jpg', 1, 1);
 
 -- --------------------------------------------------------
@@ -341,9 +356,7 @@ CREATE TABLE `venta` (
 --
 
 INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`, `n_orden`, `token`) VALUES
-(6, '90000', '2020-08-10 05:10:37.000000', '1', '19677005-4', 302329, 'B1A6B81C6BAFD5AFF5D125B10AC9E62BFA1E20EK'),
-(7, '5000', '2020-08-10 06:25:54.000000', '1', '19677005-4', 302345, '05B7132695121175A9FFD8EA42F38BDA99CA4A9Z'),
-(10, '230000', '2020-08-10 06:33:41.000000', '1', '19677005-4', 302347, '6CFF5EFE1A7DC52A8A510E055A07262BC9E3018C');
+(12, '240000', '2020-08-11 02:02:43.000000', '1', '19677005-4', 302960, '6466C25B08BD1938F0864E98DC63BECE8AA21FCP');
 
 --
 -- Índices para tablas volcadas
@@ -444,7 +457,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas

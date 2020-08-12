@@ -59,7 +59,7 @@ class proveedorController extends Controller
     }
     public function edit($id)
     {
-        return view("almacen.proveedor.edit",["proveedor"=>Provedor::findOrFail($id)]);
+        return view("almacen.proveedor.edit",["proveedor"=>Provedor::findOrFail($id)])->with('id',$id);
     }
     public function update(proveedorFormRequest $request,$id)
     {

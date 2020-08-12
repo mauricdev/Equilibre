@@ -39,11 +39,12 @@ class HomeController extends Controller
         GROUP BY p.idproducto ORDER BY p.idproducto DESC LIMIT 5");
 
         $lineal = DB::select(" SELECT fechaHora as fecha ,  sum(total_venta) as total
-        FROM venta GROUP BY DATE_FORMAT(fecha, '%m/%y')  order by fecha");
+        FROM venta WHERE Estado = 1 GROUP BY DATE_FORMAT(fecha, '%m/%y')  order by fecha");
 
+        $linea2 = DB::select(" SELECT fechaHora as fecha ,  sum(total_venta) as total
+        FROM venta WHERE Estado = 0 GROUP BY DATE_FORMAT(fecha, '%m/%y')  order by fecha");
 
-
-        return view('almacen/dashborad/index', ["pastel" => $pastel, "pastel2" => $pastel2, "linea" => $lineal]);
+        return view('almacen/dashborad/index', ["pastel" => $pastel, "pastel2" => $pastel2, "linea" => $lineal , "linea2" => $linea2]);
     }
     public function export()
     {

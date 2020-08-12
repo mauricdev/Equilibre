@@ -55,7 +55,8 @@ class personaController extends Controller
     }
     public function edit($id)
     {
-        return view("almacen.persona.edit",["Personas"=>Persona::findOrFail($id)]);
+        
+        return view("almacen.persona.edit",["Personas"=>Persona::findOrFail($id)])->with('id',$id);
     }
     public function update(personaFormRequest $request,$id)
     {

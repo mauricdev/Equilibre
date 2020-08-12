@@ -31,7 +31,7 @@
 					<td>{{ $per->ciudad}}</td>
 					<td>{{ $per->telefono}}</td>
 					<td>
-					<!--	<a href="{{URL::action('personaController@edit',$per->rut)}}"><button class="btn btn-info">Editar</button></a> -->
+						<a href="{{URL::action('personaController@edit',$per->rut)}}"><button class="btn btn-info">Editar</button></a>
 					</td>
 				</tr>
 				@endforeach

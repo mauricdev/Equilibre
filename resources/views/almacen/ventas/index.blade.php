@@ -16,6 +16,7 @@
 					<th>Total venta</th>
 					<th>Fecha</th>
 					<th>Persona</th>
+					<th>Estado</th>
 				</thead>
                @foreach ($venta as $ven)
 				<tr>
@@ -23,9 +24,18 @@
 					<td>{{ $ven->total_venta}}</td>					
 					<td>{{ date('Y-m-d H:i:s',strtotime($ven->fechaHora))}}</td>
 					<td>{{ $ven->Persona}}</td>
+					@if($ven->estado == 1)
+					<td>Activo</td>
+					@else
+					<td>Anulado</td>
+					@endif
 					<td>
 						<a href="{{URL::action('ventasController@edit',$ven->idventa)}}"><button class="btn btn-info">Detalles</button></a>
-                         <a href="" data-target="#modal-delete-{{$ven->idventa}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a>
+					@if($ven->estado == 1)
+					<a href="" data-target="#modal-delete-{{$ven->idventa}}" data-toggle="modal"><button class="btn btn-danger">Anular</button></a>
+					@else
+					<a href="" data-target="#modal-delete-{{$ven->idventa}}" data-toggle="modal"><button class="btn btn-success">Activar</button></a>
+					@endif
 					</td>
 				</tr>
 				@include('almacen.ventas.modal')

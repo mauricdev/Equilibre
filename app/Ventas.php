@@ -15,9 +15,9 @@ class Ventas extends Model
  
     protected $fillable =[
         'idventa',
-       'total_venta',
-       'fecha',
-       'persona_rut1', 
+        'total_venta',
+        'fecha',
+        'persona_rut1', 
     ];
  
     protected $guarded =[

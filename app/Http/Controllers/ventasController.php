@@ -23,8 +23,7 @@ class ventasController extends Controller
         $query=trim($request->get('searchText'));
         $Ventas=DB::table('venta as v')
         ->join('persona as p','v.persona_rut1','=','p.rut')
-        ->select('v.idventa','v.total_venta','v.fechaHora','p.rut as Persona')
-        ->where ('estado','=','1')
+        ->select('v.idventa','v.total_venta','v.fechaHora','p.rut as Persona','estado')
         ->where('p.rut','LIKE','%'.$query.'%')
         ->where('p.rut','LIKE','%'.$query.'%')
         ->orderBy('v.idventa')
@@ -75,7 +74,11 @@ class ventasController extends Controller
     public function destroy($id)
     {
         $ventas=ventas::findOrFail($id);
-        $ventas->Estado='0';
+        if($ventas->Estado == 0){
+            $ventas->Estado='1';
+        }else{
+            $ventas->Estado='0';
+        }        
         $ventas->update();
         return Redirect::to('almacen/ventas');
     }

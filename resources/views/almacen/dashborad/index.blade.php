@@ -72,10 +72,13 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Ganancias', 'Mes'],
-          @foreach ($linea as $lineas)
-              ['{{date('M', strtotime($lineas->fecha))}}', {{ $lineas->total}}],
-            @endforeach
+          ['Mes', 'Ganancias','Anulaciones'],
+          @foreach ($linea as $lineas)          
+              ['{{date('M', strtotime($lineas->fecha))}}', {{ $lineas->total}},
+          @endforeach
+          @foreach ($linea2 as $lineass)          
+               {{ $lineass->total}}],
+          @endforeach
         ]);
 
         var options = {

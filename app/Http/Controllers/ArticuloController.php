@@ -25,7 +25,7 @@ class ArticuloController extends Controller
             $query=trim($request->get('searchText'));
             $Articulos=DB::table('producto as p')
             ->join('categoria as c','p.categoria_idcategoria','=','c.idcategoria')
-            ->select('p.idproducto','p.nombre','c.nombre as categoria','p.unidad_medida','p.precio_compra','p.precio_venta','p.descuento','p.stock','p.stock_critico','p.Estado','p.imagen')
+            ->select('p.idproducto','p.nombre','c.nombre as categoria','p.unidad_medida','p.precio_compra','p.precio_venta','p.precio_descuento','p.descuento as descuento','p.stock','p.stock_critico','p.Estado','p.imagen')
             ->where('p.idproducto','LIKE','%'.$query.'%')
             ->orwhere('p.nombre','LIKE','%'.$query.'%')
             ->orderBy('p.idproducto')
@@ -101,7 +101,11 @@ class ArticuloController extends Controller
     public function destroy($id)
     {
         $Articulos=Articulo::findOrFail($id);
-        $Articulos->estado='Inactivo';
+        if($Articulos->Estado == 0){
+            $Articulos->Estado='1';
+        }else{
+            $Articulos->Estado='0';
+        }             
         $Articulos->update();
         return Redirect::to('almacen/articulo');
     }

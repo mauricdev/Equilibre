@@ -28,7 +28,7 @@
             
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (CLP)</span>
-              <strong>${{ $pago['monto'] }}</strong>
+              <strong>${{ Session::get('cart')->preciototal }}</strong>
             </li>
           </ul>
 
@@ -38,8 +38,7 @@
           <h4 class="mb-3">Informacion Cliente</h4>
           <form class="needs-validation" method="POST" action="{{ route('orden') }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="concepto" id="concepto" placeholder="Pago de Orden N° 1000"  value="{{ $pago['descripcion'] }}" readonly="readonly" required>
-            <div class="row">
+           <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="rut">RUT</label>
                     <input type="text" name="rut" id="rut" class="form-control" placeholder="11111111-1" value="{{ $pago['rut'] }}" readonly="readonly"  required>
@@ -59,14 +58,14 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="" required>
+                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="{{ $pago['nombre'] }}" required>
                 <div class="invalid-feedback">
                   Debe Ingresar Su nombre.
                 </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="apellido">Apellidos</label>
-                <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellidos" value="" required>
+                <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellidos" value="{{ $pago['apellido'] }}" required>
                 <div class="invalid-feedback">
                   Debe ingresar su Apellido.
                 </div>
@@ -77,7 +76,7 @@
 
             <div class="mb-3">
               <label for="direccion">Dirección</label>
-              <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Nombre de Calle" required>
+              <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Nombre de Calle" value="{{ $pago['direccion'] }}" required>
               <div class="invalid-feedback">
                 Por favor Ingrese su Dirección.
               </div>
@@ -86,15 +85,15 @@
 
             <div class="row">
                 <div class="col-md-2 mb-3">
-                    <label for="numero">Numero</label>
-                    <input type="text" class="form-control" name="numero" id="numero" placeholder="555" value="" required>
+                    <label for="pais">País</label>
+                    <input type="text" class="form-control" name="pais" id="pais" placeholder="Chile" value="Chile" readonly="readonly" required>
                     <div class="invalid-feedback">
-                    numero de casa requerido.
+                    País requerido.
                     </div>
                 </div>
               <div class="col-md-6 mb-3">
                 <label for="ciudad">Ciudad</label>
-                <input type="text" class="form-control" name="pais" id="pais" placeholder="Ciudad..." value="" required>
+                <input type="text" class="form-control" name="ciudad" id="ciudad" placeholder="Ciudad..." value="{{ $pago['ciudad'] }}" required>
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
@@ -105,7 +104,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text">+56 </span>
                     </div>
-                    <input type="number" class="form-control" name="telefono" id="telefonno" placeholder="912345678" value="" required>
+                    <input type="number" class="form-control" name="telefono" id="telefonno" placeholder="912345678" value="{{ $pago['telefono'] }}" required>
                     <div class="invalid-feedback" style="width: 100%;">
                         Ingresa un Telefono valido.
                     </div>
@@ -122,26 +121,6 @@
               <input type="checkbox" class="custom-control-input" name="terminos" id="terminos" required>
               <label class="custom-control-label" for="terminos">Acepto los Terminos de uso y condición</label>
             </div>
-            <hr class="mb-4">
-
-            <h4 class="mb-3">Datos para generar orden de pago</h4>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="orden">Orden N°</label>
-                <input type="text" class="form-control" name="orden" id="orden" placeholder="1000" value="{{ $pago['idventa'] }}" readonly="readonly" required>
-                <div class="invalid-feedback">
-                  Numero de Orden Requerido.
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="monto">Monto Total Compra</label>
-                <input type="text" class="form-control" name="monto" id="monto" placeholder="20000" value="{{ $pago['monto'] }}" readonly="readonly" required>
-                <div class="invalid-feedback">
-                  Monto total Compra requerido.
-                </div>
-              </div>
-            </div>
-        
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Ir al Checkout</button>
           </form>

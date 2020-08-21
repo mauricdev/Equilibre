@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2020 a las 09:15:32
+-- Tiempo de generación: 22-08-2020 a las 00:10:24
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -102,31 +102,25 @@ CREATE TABLE `detalle_venta` (
   `precio_unitario` float NOT NULL,
   `precio_total` float NOT NULL,
   `venta_idventa` int(11) NOT NULL,
-  `venta_persona_rut` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
+  `venta_persona_rut` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `descripcion` varchar(150) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `detalle_venta`
 --
 
-INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario`, `precio_total`, `venta_idventa`, `venta_persona_rut`) VALUES
-(780431289642, 1, 70000, 70000, 6, '19677005-4'),
-(780431289642, 1, 70000, 70000, 7, '19677005-4'),
-(780431289642, 3, 70000, 210000, 10, '19677005-4'),
-(780431289642, 1, 70000, 70000, 11, '19677005-4'),
-(780432874121, 1, 20000, 20000, 6, '19677005-4'),
-(780432874121, 1, 20000, 20000, 7, '19677005-4'),
-(780432874121, 1, 20000, 20000, 10, '19677005-4'),
-(780432874121, 2, 20000, 40000, 11, '19677005-4'),
-(780432874121, 2, 20000, 40000, 12, '19677005-4'),
-(780784574845, 1, 200000, 200000, 7, '19677005-4'),
-(780784574845, 1, 200000, 200000, 12, '19677005-4');
+INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario`, `precio_total`, `venta_idventa`, `venta_persona_rut`, `descripcion`) VALUES
+(780431289642, 4, 70000, 280000, 1, '19677005-4', ''),
+(780432874121, 2, 20000, 40000, 1, '19677005-4', ''),
+(780432874121, 2, 20000, 40000, 2, '10192512-9', 'falta almenos 2 de stock para poder completar el pedido de este producto'),
+(780784574845, 1, 200000, 200000, 1, '19677005-4', '');
 
 --
 -- Disparadores `detalle_venta`
 --
 DELIMITER $$
-CREATE TRIGGER `tr_updStockVenta` AFTER INSERT ON `detalle_venta` FOR EACH ROW BEGIN
+CREATE TRIGGER `Str_actualizarStockventa` AFTER INSERT ON `detalle_venta` FOR EACH ROW BEGIN
      UPDATE producto SET stock = stock - NEW.cantidad
         WHERE producto.idproducto =NEW.producto_idproducto;
 END
@@ -246,9 +240,10 @@ CREATE TABLE `persona` (
 --
 
 INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciudad`, `telefono`) VALUES
+('10192512-9', 'Jorge', 'Troncoso Iturra', 'correoprueba@gmail.com', 'Edmundo Witting 503', 'Tomé', '988776655'),
+('18529988-0', 'alejandro', 'Troncoso', 'alejandro@gmail.com', 'edmundo witin 503', 'tome', '912345678'),
 ('18821824-5', 'Mauricio ', 'Gutierrez Sanhueza', 'Mauric.gutierr1995@gmail.com', 'Mi casa', 'Coronel', '952429788'),
-('188218245', 'asdqasd', 'qwasd', 'asd@gmail.com', 'asdasd', 'asdasd', '123123'),
-('19677005-4', 'Jorge', 'Troncoso Irribarra', 'j.troncosoi@gmail.com', 'Mi casa', 'Tomé', '912345678');
+('19677005-4', 'Jorge', 'Troncoso', 'j.troncosoi97@gmail.com', 'Edmundo Witting 505', 'Tomé', '912345678');
 
 -- --------------------------------------------------------
 
@@ -276,10 +271,10 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`, `precio_venta`, `precio_descuento`, `stock`, `stock_critico`, `descuento`, `imagen`, `Estado`, `categoria_idcategoria`) VALUES
-(780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 102.5, 100, 0, 'pesa.jpg', 1, 3),
-(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, 118, 20, 0, 'pelota_morada.jpg', 1, 1),
-(780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 90, 20, 0, 'camilla.jpg', 1, 1),
-(780987256314, 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 20, 5, 0, 'camilla-de-masaje.jpg', 1, 1);
+(780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 93.5, 100, 0, 'pesa.jpg', 1, 3),
+(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, -2, 20, 0, 'pelota_morada.jpg', 1, 1),
+(780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 88, 20, 0, 'camilla.jpg', 1, 1),
+(780987256314, 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 19, 5, 0, 'camilla-de-masaje.jpg', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -332,7 +327,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Mauricio Gutierrez S', 'mauric.gutierr1995@gmail.com', '$2y$10$UNPJ58foXdKAGk2Qz./jE.jpDrg.qDEwGzyJOxzkwSebZYSKNXrZS', 'YM0rD4KHsezBWMF1CVEjuKC2sZZYOg5MDb9PLSUOrpny7cor1CS7m3e0rrCS', '2020-07-28 00:59:57', '2020-07-30 19:21:45'),
-(3, 'koke', 'koke@gmail.com', '$2y$10$eqrYWFdAAL1mAPa/xXYi9.dpYyVNvgUsPzMSlnZvgohA0XVTBtScq', 'PT0Dahzl6yxcpgkiOvvYKihsrQsNzhOvXk26nYBtWijA6Dx1cGWFJFjG01O2', '2020-07-29 15:28:45', '2020-08-10 09:40:55'),
+(3, 'koke', 'koke@gmail.com', '$2y$10$eqrYWFdAAL1mAPa/xXYi9.dpYyVNvgUsPzMSlnZvgohA0XVTBtScq', 'F8b7aUDOaaY2Jb1BPf0s4AAocumZ9Y1RiZV7J2i0O6zqciznJOdBWkcbiG5H', '2020-07-29 15:28:45', '2020-08-21 21:42:53'),
 (4, 'Juan', 'Juan@gmail.com', '123456', NULL, '2020-07-30 19:34:03', '2020-07-30 19:34:03');
 
 -- --------------------------------------------------------
@@ -348,15 +343,18 @@ CREATE TABLE `venta` (
   `Estado` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `persona_rut1` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
   `n_orden` int(11) NOT NULL,
-  `token` varchar(50) COLLATE utf8_spanish2_ci NOT NULL
+  `token` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `descripcion` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `ordencomercio` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `venta`
 --
 
-INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`, `n_orden`, `token`) VALUES
-(12, '240000', '2020-08-11 02:02:43.000000', '1', '19677005-4', 302960, '6466C25B08BD1938F0864E98DC63BECE8AA21FCP');
+INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`, `n_orden`, `token`, `descripcion`, `ordencomercio`) VALUES
+(1, '520000', '2020-08-21 18:00:38.000000', '1', '19677005-4', 309724, 'A0DAE0725CC10876F3F597454F603185660D041P', '', 1426041023),
+(2, '40000', '2020-08-21 18:00:46.000000', '2', '10192512-9', 309723, '3B723E6783A8DC94772E350FFFCA587C9438E47X', 'esta venta ya fue pagada pero falta stock de uno de los productos para poder completar el pedido', 666267174);
 
 --
 -- Índices para tablas volcadas
@@ -457,7 +455,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- Restricciones para tablas volcadas

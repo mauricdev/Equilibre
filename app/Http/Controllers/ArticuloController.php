@@ -49,11 +49,13 @@ class ArticuloController extends Controller
         $Articulos->unidad_medida=$request->get('unidad_medida');
         $Articulos->precio_compra=$request->get('precio_compra');
         $Articulos->precio_venta=$request->get('precio_venta');
-        $Articulos->precio_descuento=$request->get('precio_venta');
         $Articulos->stock=$request->get('stock');
         $Articulos->stock_critico=$request->get('stock_critico');
-        $Articulos->descuento = 0;
-        $Articulos->estado='Activo';        
+        $Articulos->descuento = $request->get('descuento');
+        $descuento = $request->get('descuento');
+        $precio_venta = $request->get('precio_venta');
+        $Articulos->precio_descuento= $precio_venta - ($descuento * $precio_venta /100);
+        $Articulos->estado='1';        
         if(Input::hasFile('imagen')){
             $file=Input::file('imagen');
             $file->move(public_path().'/imagenes/articulos/',$file->getClientOriginalName());
@@ -84,10 +86,12 @@ class ArticuloController extends Controller
         $Articulos->unidad_medida=$request->get('unidad_medida');
         $Articulos->precio_compra=$request->get('precio_compra');
         $Articulos->precio_venta=$request->get('precio_venta');
-        $Articulos->precio_descuento=$request->get('precio_venta');
         $Articulos->stock=$request->get('stock');
         $Articulos->stock_critico=$request->get('stock_critico');
-        $Articulos->descuento = 0;
+        $Articulos->descuento = $request->get('descuento');
+        $descuento = $request->get('descuento');
+        $precio_venta = $request->get('precio_venta');
+        $Articulos->precio_descuento= $precio_venta - ($descuento * $precio_venta /100);
         $Articulos->Estado=$request->get('Estado');     
         if(Input::hasFile('imagen')){
             $file=Input::file('imagen');

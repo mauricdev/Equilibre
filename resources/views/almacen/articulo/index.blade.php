@@ -16,10 +16,10 @@
 					<th>Codigo</th>
 					<th>Nombre</th>
 					<th>Categoria</th>
-					<th>Medida</th>
-					<th>Descuento</th>
+					<th>Medida</th>				
 					<th>Precio compra</th>
 					<th>Precio venta</th>
+					<th>Descuento</th>
 					<th>Precio Final</th>
 					<th>Stock</th>
 					<th>Stock_critico</th>					
@@ -32,11 +32,11 @@
 					<td>{{ $art->idproducto}}</td>
 					<td>{{ $art->nombre}}</td>
 					<td>{{ $art->categoria}}</td>
-					<td>{{ $art->unidad_medida}}</td>
-					<td >{{ $art->descuento}}</td>
-					<td>{{ $art->precio_compra}}</td>
-					<td>{{ $art->precio_venta}}</td>
-					<td>{{ $art->precio_descuento}}</td>
+					<td>{{ $art->unidad_medida}}</td>					
+					<td>${{ $art->precio_compra}}</td>
+					<td>${{ $art->precio_venta}}</td>
+					<td >{{ $art->descuento}}%</td>
+					<td>${{ $art->precio_descuento}}</td>
 					@if($art->stock <= $art->stock_critico )
 					<td style="color:red;">{{ $art->stock}}</td>
 					@else

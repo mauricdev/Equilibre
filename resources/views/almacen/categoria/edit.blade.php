@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
             	<button class="btn btn-primary" type="submit">Guardar</button>
-            	<button class="btn btn-danger" type="reset">Cancelar</button>
+            	<button type="button" class="btn btn-danger" onclick="window.location='{{url('almacen/categoria')}}'">Cancelar</button>
             </div>
 
 			{!!Form::close()!!}		

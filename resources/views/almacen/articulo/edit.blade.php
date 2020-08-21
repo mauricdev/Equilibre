@@ -61,7 +61,7 @@
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<div class="form-group">
 			<label for="nombre">Descuento</label>
-			<input type="text" name="descuento" required value="{{$articulo->descuento}}" class="form-control" placeholder="descuento...">
+			<input type="number" name="descuento" required value="{{$articulo->descuento}}" class="form-control"  min="0" max="100" placeholder="descuento...">
 		</div>
 	</div>
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -98,7 +98,7 @@
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<div class="form-group">
 			<button class="btn btn-primary" type="submit">Guardar</button>
-			<button class="btn btn-danger" type="reset">Cancelar</button>
+			<button type="button" class="btn btn-danger" onclick="window.location='{{url('almacen/articulo')}}'">Cancelar</button>
 		</div>
 	</div>
 	

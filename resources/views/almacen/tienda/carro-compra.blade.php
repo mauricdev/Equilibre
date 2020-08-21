@@ -13,7 +13,7 @@
                     <table class="table table-hover" style="font-size: 10px; white-space:nowrap;">
                         <thead>
                           <tr>
-                            
+
                             <th class="text-center " scope="col">Cantidad</th>
                             <th scope="col">Producto</th>
                             <th class="text-right" scope="col">Precio</th>
@@ -74,6 +74,17 @@
                                 </button>
                             </div>
                             <div class="modal-body text-center">
+                                @if (count($errors) > 0)
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $item)
+                                                <li>
+                                                    {{$item}}    
+                                                </li>                                                
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="form-group">
                                     <label class="col-form-label text-center">Ingrese su RUT para Continuar</label>

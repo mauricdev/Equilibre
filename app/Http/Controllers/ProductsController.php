@@ -14,20 +14,24 @@ class ProductsController extends Controller
         //$products = Articulo::where('estado', '>', 0)->where('stock','>',0)->get();
         $products = Articulo::where('estado', '>', 0)->get();
 
-/*
+        
+
         if(Session::has('cart')){
             $cart= new Cart(Session::get('cart'));
             foreach($products as $pro){
                 //dd($pro);
                 foreach($cart->items as $ca){
-                    //dd($ca);
+                    //dd($ca['qty']);
+                    //dd($ca['item']['idproducto']);
+                    //dd($pro['idproducto']);
                     if($pro['idproducto']==$ca['item']['idproducto']){
-                        $pro['stock']==$pro['stock']-$ca['qty'];
+                        $pro['stock']= $pro['stock']-$ca['qty'];
+
                     }
                 }
             }
         }
-        dd($products);*/
+        //dd($products);
 
         return view('almacen/tienda/index', ['products' => $products]);
     }

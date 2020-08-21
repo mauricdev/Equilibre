@@ -7,6 +7,7 @@ class Cart
    public  $items = null;
    public  $totalQty = 0;
    public  $preciototal = 0;
+   public  $estado = 0;
 
    public function __construct($oldCart)
    {

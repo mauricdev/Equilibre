@@ -36,9 +36,20 @@
         </div>
         <div class="col-md-8 order-md-1">
           <h4 class="mb-3">Informacion Cliente</h4>
-          <form class="needs-validation" method="POST" action="{{ route('orden') }}">
+          <form class="needs-validation was-validated" method="POST" action="{{ route('orden') }}" novalidate>
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
            <div class="row">
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $item)
+                                <li>
+                                    {{$item}}    
+                                </li>                                                
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="col-md-6 mb-3">
                     <label for="rut">RUT</label>
                     <input type="text" name="rut" id="rut" class="form-control" placeholder="11111111-1" value="{{ $pago['rut'] }}" readonly="readonly"  required>

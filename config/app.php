@@ -158,6 +158,9 @@ return [
         equilibre\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        //service provider para validacion rut
+        Freshwork\ChileanBundle\Laravel\ChileanBundleServiceProvider::class,
     ],
 
     /*
@@ -206,6 +209,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Rut'   => Freshwork\ChileanBundle\Laravel\Facades\Rut::class,
     ],
 
 ];

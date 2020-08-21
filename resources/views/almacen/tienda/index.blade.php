@@ -10,7 +10,7 @@
             <img class="card-img-top" src="{{asset('/imagenes/articulos/'.$product->imagen)}}" alt="{{$product->nombre}}" height="350px">
             <div class="card-body">
             <h5 class="card-title">{{$product->nombre}}</h5>
-                    @if($product->stock==0)
+                    @if($product->stock<=0)
                         <p class="card-text">Stock: Agotado</p>
                 
                     @else
@@ -33,6 +33,7 @@
                     <button class="btn btn-success" role="button">Añadir al Carro</button>
                 
                     @else
+                    
                     <a href="{{ route('almacen.tienda.addToCart',['id' => $product->idproducto])}}" class="btn btn-success" role="button">Añadir al Carro</a>
                 
                     @endif

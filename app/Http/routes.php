@@ -62,6 +62,7 @@ Route::post('flow/retorno', 'FlowController@retorno')->name('flow.retorno');
 
 
 
+
 Route::auth();
 
 Route::resource('almacen/categoria','CategoriaController');

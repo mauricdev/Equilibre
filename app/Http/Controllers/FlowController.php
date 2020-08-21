@@ -12,6 +12,8 @@ use equilibre\Cart;
 
 use equilibre\Persona;
 
+use equilibre\Articulo;
+
 use Session;
 
 use equilibre\Ventas;
@@ -20,6 +22,7 @@ use equilibre\Http\Requests\ventasFormRequest;
 use DB;
 use equilibre\detalle_venta;
 use Response;
+use ValidateRequests;
 
 class FlowController extends Controller
 {
@@ -27,10 +30,28 @@ class FlowController extends Controller
     {
         
         $carro = Session::get('cart');
-        
+          
         if ($carro==null || $request->rut==null){
             return view('almacen.tienda.carro-compra');
         }
+
+        $this->validate($request,[
+            'rut' => 'required|min:9|max:10|cl_rut'
+        ]);
+        
+        
+        if(strlen($request->rut)==9){
+            //dd(strlen($request->rut));
+            if(!strpbrk($request->rut,'-')){
+                $digito = substr($request->rut,-1);
+                $run = substr($request->rut,0,8);
+                $request->rut = $run.'-'.$digito;
+                //dd($request->rut);
+            }
+        }
+
+        
+        
         $rut = $request->rut;
         $email = "";
         $nombre = "";
@@ -46,6 +67,7 @@ class FlowController extends Controller
             $nombre = $p->nombre;
             $apellido = $p->apellidos;
             $direccion = $p->direccion;
+            $pais = 'Chile';
             $ciudad = $p->ciudad;
             $telefono = $p->telefono;
         }
@@ -80,17 +102,51 @@ class FlowController extends Controller
      */
     public function orden(Request $request)
     {
-       
+        $this->validate($request,[
+            'rut' => 'required|min:9|max:10|cl_rut'
+        ]);
+        if(strlen($request->rut)==9){
+            //dd(strlen($request->rut));
+            if(!strpbrk($request->rut,'-')){
+                $digito = substr($request->rut,-1);
+                $run = substr($request->rut,0,8);
+                $request->rut = $run.'-'.$digito;
+                //dd($request->rut);
+            }
+        }
         $carro = Session::get('cart');
         
-        $idventa = Ventas::latest('idventa')->first();
-        $idventa = $idventa->idventa;
-        $idventa++;
+        $venta = Ventas::all();
+
+        if(!$venta->isEmpty()){
+            
+                
+            do {
+                $idventa = rand();
+                $aux = 0;
+                foreach ($venta as $item) {
+                    if ($item->ordencomercio==$idventa){
+                        $aux=1;
+                    }
+                }
+            } while ($aux==1);
+            $id = Ventas::latest('idventa')->first();
+            $id = $id->idventa;
+            $id++;
+        }else{
+            $idventa = rand();
+            $id = 1;
+        }
+        
         
         //dd($carro->preciototal);
         if ($carro==null){
             return view('almacen.tienda.carro-compra');
         }
+
+        
+
+
         $optional = array(
             "rut" => $request->rut,
             'email' => $request->pagador,
@@ -107,7 +163,7 @@ class FlowController extends Controller
         $orden = [
             //SEGUIR EL ORDEN Y NOMBRE DE CLAVES COMO SE MUESTRA A CONTINUACION
             'commerceOrder'  => $idventa,
-            'subject'      => 'Venta Online Equilibre N°'.$idventa,
+            'subject'      => 'Venta Online Equilibre N°'.$id,
             'amount'         => $carro->preciototal,
             'email' => $request->pagador,
             //'optional' => $optional
@@ -116,10 +172,12 @@ class FlowController extends Controller
         //dd($optional);
         // Genera una nueva Orden de Pago, Flow la firma y retorna un paquete de datos firmados
         $orden_generada = Flow::GenerateFlowOrder($orden,$optional);
-
+        $request->session()->put('carro', Session::get('cart'));
+        Session::forget('cart');
         // Si desea enviar el medio de pago usar la siguiente línea
         //$orden['flow_pack'] = Flow::new_order($orden['orden_compra'], $orden['monto'], $orden['concepto'], $orden['email_pagador'], $orden['medio_pago']);
-        //dd( $orden_generada);
+        //dd( $orden_generada['response']->token);
+        //return redirect::away($orden_generada['response']->url)->with([$orden_generada['response']->token]);
         return view('orden')->with(['order'=>$orden_generada]);
     }
 
@@ -222,7 +280,7 @@ class FlowController extends Controller
 
     public function retorno(Request $request){
         $response = Flow::getStatus($request->token);
-        $carro = Session::get('cart');
+        $carro = Session::get('carro');
         $carro = new Cart($carro);
         if($carro == null || $response == null ){
             return view('flow.sinacceso');
@@ -267,17 +325,30 @@ class FlowController extends Controller
 
             //dd($orden);
             
+            $id = Ventas::latest('idventa')->first();
+            
+            if ($id==null) {
+                $id=1;
+            }else{
+                $id = $id->idventa;
+                $id++;
+            }
+            
+
             $venta= new Ventas;
-            $venta->idventa=$response->commerceOrder;
+            $venta->idventa= $id;
             $venta->total_venta=$response->amount;
             $venta->fechaHora=$response->paymentData->date;
             $venta->estado= 1;
             $venta->persona_rut1=$response->optional->rut;
             $venta->n_orden= $response->flowOrder;
             $venta->token=$request->token;
+            $venta->descripcion= '';
+            $venta->ordencomercio= $response->commerceOrder;
             $venta->save();
             //dd($venta);
             //$a = array(new detalle_venta);
+            $aux=0;
             foreach($carro as $producto){
                 $detalle_venta = new detalle_venta;
                 $detalle_venta->producto_idproducto=$producto['item']['idproducto'];
@@ -285,16 +356,35 @@ class FlowController extends Controller
                 $detalle_venta->cantidad=$producto['qty'];
                 $detalle_venta->precio_unitario=$producto['precio_unitario'];
                 $detalle_venta->precio_total=$producto['precio'];
-                $detalle_venta->venta_idventa=$response->commerceOrder;
+                $detalle_venta->venta_idventa=$id;
                 $detalle_venta->venta_persona_rut=$response->optional->rut;
                 
+                
+                $producto=Articulo::findOrFail($producto['item']['idproducto']);
+                $producto->stock= $producto->stock-$detalle_venta->cantidad;
+                if($producto->stock<0){
+                    
+                    $detalle_venta->descripcion='falta almenos '.abs($producto->stock).' de stock para poder completar el pedido de este producto';
+                    $aux = 1;
+                }
                 $detalle_venta->save();
+                //dd("es mayor");
                 //array_push($a,$detalle_venta);
             }
+            if($aux == 1 ){
+                    
+                $venta=Ventas::findOrFail($id);
+                $venta->estado=2;
+                $venta->descripcion= 'esta venta ya fue pagada pero falta stock de uno de los productos para poder completar el pedido';
+                $venta->update();
+                //dd($venta);
+            }
+
+
             //dd($a);
             //dd($detalle_venta);
             DB::commit();
-            Session::forget('cart');
+            Session::forget('carro');
             return view('flow.exito')->with(["FlowOrder" =>$response->flowOrder]);
         }
         //dd($response->status);

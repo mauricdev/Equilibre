@@ -27,8 +27,20 @@
             @endforeach
             
             <li class="list-group-item d-flex justify-content-between">
-              <span>Total (CLP)</span>
-              <strong>${{ Session::get('cart')->preciototal }}</strong>
+              <div>
+                <small class="text-muted">SubTotal:</small>
+                <br>
+                <small class="text-muted">Valor Iva:</small>
+                <br>
+                <h6 class="my-0">Total a Pagar:</h6>
+              </div>
+              <div class="text-right">
+                <small class="text-muted">${{ Session::get('cart')->preciototal }}</small>
+                <br>
+                <small class="text-muted">${{ Session::get('cart')->precioiva }}</small>
+                <br>
+                <strong>${{ Session::get('cart')->preciofinal }}</strong>
+              </div>
             </li>
           </ul>
 

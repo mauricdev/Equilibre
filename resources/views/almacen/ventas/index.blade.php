@@ -26,8 +26,10 @@
 					<td>{{ $ven->Persona}}</td>
 					@if($ven->estado == 1)
 					<td>Activo</td>
+					@elseif($ven->estado == 2)
+					<td>Sin Stock</td>
 					@else
-					<td>Anulado</td>
+					<td>Inactivo</td>
 					@endif
 					<td>
 						<a href="{{URL::action('ventasController@edit',$ven->idventa)}}"><button class="btn btn-info">Detalles</button></a>

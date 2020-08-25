@@ -7,7 +7,10 @@ class Cart
    public  $items = null;
    public  $totalQty = 0;
    public  $preciototal = 0;
-   public  $estado = 0;
+   public  $precioiva = 0;
+   public  $preciofinal = 0;
+
+   private $iva = 0.19;
 
    public function __construct($oldCart)
    {
@@ -16,6 +19,8 @@ class Cart
             $this->items = $oldCart->items;
             $this->totalQty = $oldCart->totalQty;
             $this->preciototal = $oldCart->preciototal;
+            $this->precioiva = $oldCart->precioiva;
+            $this->preciofinal = $oldCart->preciofinal;
        }
    }
 
@@ -30,7 +35,10 @@ class Cart
        $storedItem['precio'] = $item->precio_descuento * $storedItem['qty'];
        $this->items[$id] = $storedItem;
        $this->totalQty++;
-       $this->preciototal += $item->precio_descuento; 
+       $this->preciototal += $item->precio_descuento;
+       $this->precioiva = $this->preciototal*$this->iva;
+       $this->preciofinal = $this->preciototal*(1+$this->iva); 
+       //dd($this);
    }
 
    
@@ -40,15 +48,20 @@ class Cart
         $this->totalQty--;
 
         $this->preciototal = $total-$this->items[$id]['precio_unitario'];
-
+        $this->precioiva = $this->preciototal*$this->iva;
+        $this->preciofinal = $this->preciototal*(1+$this->iva); 
         if ($this->items[$id]['qty'] <= 0) {
             unset($this->items[$id]);
         }
+        //dd($this);
     }
 
     public function removeAll($id) {
         $this->totalQty -= $this->items[$id]['qty'];
         $this->preciototal -= $this->items[$id]['precio'];
+        $this->precioiva = $this->preciototal*$this->iva;
+        $this->preciofinal = $this->preciototal*(1+$this->iva); 
         unset($this->items[$id]);
+        //dd($this);
     }
 }

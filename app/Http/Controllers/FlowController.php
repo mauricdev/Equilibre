@@ -148,14 +148,14 @@ class FlowController extends Controller
 
 
         $optional = array(
-            "rut" => $request->rut,
-            'email' => $request->pagador,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'direccion' => $request->direccion,
-            'pais' => $request->pais,
-            'ciudad' => $request->ciudad,
-            'telefono' => $request->telefono,
+            "Rut" => $request->rut,
+            'Email' => $request->pagador,
+            'Nombre' => $request->nombre,
+            'Apellido' => $request->apellido,
+            'Direccion' => $request->direccion,
+            'Pais' => $request->pais,
+            'Ciudad' => $request->ciudad,
+            'Telefono' => $request->telefono,
             //"otroDato" => "otroDato"
         );
         
@@ -164,7 +164,7 @@ class FlowController extends Controller
             //SEGUIR EL ORDEN Y NOMBRE DE CLAVES COMO SE MUESTRA A CONTINUACION
             'commerceOrder'  => $idventa,
             'subject'      => 'Venta Online Equilibre N°'.$id,
-            'amount'         => $carro->preciototal,
+            'amount'         => $carro->preciofinal,
             'email' => $request->pagador,
             //'optional' => $optional
             // Opcional: El medio de pago correspondera al ubicado en la configuracion
@@ -300,26 +300,26 @@ class FlowController extends Controller
             ];
             return view('flow.fracaso', $orden);
         }else{
-            $persona = Persona::find($response->optional->rut);
+            $persona = Persona::find($response->optional->Rut);
             //dd($persona);
             if($persona != null){
-                $Persona=Persona::findOrFail($response->optional->rut);
-                $Persona->nombre=$response->optional->nombre;
-                $Persona->apellidos=$response->optional->apellido;
+                $Persona=Persona::findOrFail($response->optional->Rut);
+                $Persona->nombre=$response->optional->Nombre;
+                $Persona->apellidos=$response->optional->Apellido;
                 $Persona->correo=$response->payer;  
-                $Persona->direccion=$response->optional->direccion;
-                $Persona->ciudad=$response->optional->ciudad;  
-                $Persona->telefono=$response->optional->telefono;
+                $Persona->direccion=$response->optional->Direccion;
+                $Persona->ciudad=$response->optional->Ciudad;  
+                $Persona->telefono=$response->optional->Telefono;
                 $Persona->update();
             }else {
                 $Persona=new Persona;
-                $Persona->rut=$response->optional->rut;
-                $Persona->nombre=$response->optional->nombre;
-                $Persona->apellidos=$response->optional->apellido;
+                $Persona->rut=$response->optional->Rut;
+                $Persona->nombre=$response->optional->Nombre;
+                $Persona->apellidos=$response->optional->Apellido;
                 $Persona->correo=$response->payer;  
-                $Persona->direccion=$response->optional->direccion;
-                $Persona->ciudad=$response->optional->ciudad;  
-                $Persona->telefono=$response->optional->telefono;
+                $Persona->direccion=$response->optional->Direccion;
+                $Persona->ciudad=$response->optional->Ciudad;  
+                $Persona->telefono=$response->optional->Telefono;
                 $Persona->save();
             }
 
@@ -340,7 +340,7 @@ class FlowController extends Controller
             $venta->total_venta=$response->amount;
             $venta->fechaHora=$response->paymentData->date;
             $venta->estado= 1;
-            $venta->persona_rut1=$response->optional->rut;
+            $venta->persona_rut1=$response->optional->Rut;
             $venta->n_orden= $response->flowOrder;
             $venta->token=$request->token;
             $venta->descripcion= '';
@@ -357,7 +357,7 @@ class FlowController extends Controller
                 $detalle_venta->precio_unitario=$producto['precio_unitario'];
                 $detalle_venta->precio_total=$producto['precio'];
                 $detalle_venta->venta_idventa=$id;
-                $detalle_venta->venta_persona_rut=$response->optional->rut;
+                $detalle_venta->venta_persona_rut=$response->optional->Rut;
                 
                 
                 $producto=Articulo::findOrFail($producto['item']['idproducto']);

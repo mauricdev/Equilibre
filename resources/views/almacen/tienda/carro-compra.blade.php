@@ -48,16 +48,54 @@
                             </tr>
                             @endforeach
                             <tr class="table-borderless">
-                                <td colspan="2" class="text-right "> <span>Total (CLP)</span></td>
+                                <td colspan="2" class="text-right "> <span>Subtotal (CLP)</span></td>
                                 <td class="text-right">${{$preciototal}}</td>
+                            </tr>
+                            <tr class="table-borderless">
+                                <td colspan="2" class="text-right "> <span>Iva (CLP)</span></td>
+                                <td class="text-right">${{$precioiva}}</td>
+                            </tr>
+                            <tr class="table-borderless">
+                                <td colspan="2" class="text-right "> <span>Total a Pagar (CLP)</span></td>
+                                <td class="text-right">${{$preciofinal}}</td>
                             </tr>
                         </tbody>
                     </table>
-                <hr>
                 <div class="row">
                     <div class="col-sm-12">
-                        <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target=".bd-example-modal-sm">Ir a Pagar</button>
-
+                        <form method="POST" action="{{ route('pago') }}">
+                            
+                            <div >
+                                
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted">Procesar Pago</span>
+                                <span class="badge badge-success badge-pill">$</span>
+                                </h4>
+                                <hr>
+                                @if (count($errors) > 0)
+                                    
+                                    
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $item)
+                                                <li>
+                                                    {{$item}}    
+                                                </li>                                                
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                @endif
+                                <div class="form-group">
+                                    <label class="col-form-label text-center">Ingrese su RUT para Continuar</label>
+                                    <input type="text" class="form-control text-center" name="rut" id="rut" placeholder="11111111-1" required>
+                                </div>
+                            </div>
+                            
+                        
+                            <button type="submit" class="btn btn-secondary btn-block">Ir a Pagar</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-08-2020 a las 00:10:24
+-- Tiempo de generación: 25-08-2020 a las 02:51:28
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -42,7 +42,8 @@ CREATE TABLE `categoria` (
 INSERT INTO `categoria` (`idcategoria`, `nombre`, `descripcion`, `estado`, `categoriacol`) VALUES
 (1, 'Camillas', 'Esta son camillas full power', 1, NULL),
 (2, 'Pelotas', 'Estos son pelotas kinesiologicas muy full', 1, NULL),
-(3, 'Pesas', 'Pesas para kinesiologia', 1, NULL);
+(3, 'Pesas', 'Pesas para kinesiologia', 1, NULL),
+(4, 'vendas', 'vendas venditas', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -77,7 +78,9 @@ INSERT INTO `detalle_ingreso` (`ingreso_idingreso`, `producto_idproducto`, `cant
 (65, 8, 2, 2),
 (66, 780431289642, 3, 3),
 (67, 780431289642, 2, 5000),
-(68, 780431289642, 1, 1);
+(68, 780431289642, 1, 1),
+(70, 12345678978, 10, 5000),
+(70, 780432874121, 3, 6000);
 
 --
 -- Disparadores `detalle_ingreso`
@@ -112,8 +115,11 @@ CREATE TABLE `detalle_venta` (
 
 INSERT INTO `detalle_venta` (`producto_idproducto`, `cantidad`, `precio_unitario`, `precio_total`, `venta_idventa`, `venta_persona_rut`, `descripcion`) VALUES
 (780431289642, 4, 70000, 280000, 1, '19677005-4', ''),
+(780431289642, 1, 56000, 56000, 3, '7002352-0', ''),
+(780431289642, 2, 56000, 112000, 4, '19677005-4', ''),
 (780432874121, 2, 20000, 40000, 1, '19677005-4', ''),
 (780432874121, 2, 20000, 40000, 2, '10192512-9', 'falta almenos 2 de stock para poder completar el pedido de este producto'),
+(780432874121, 1, 20000, 20000, 3, '7002352-0', ''),
 (780784574845, 1, 200000, 200000, 1, '19677005-4', '');
 
 --
@@ -186,7 +192,8 @@ INSERT INTO `ingreso` (`idingreso`, `fechaHora`, `tipoComprobante`, `numeroCompr
 (65, '2020-07-30 14:56:27.000000', 'Boleta', '2', '1', 1),
 (66, '2020-07-30 14:56:35.000000', 'Boleta', '3', '1', 1),
 (67, '2020-07-30 15:44:45.000000', 'Factura', '123', '4', 1),
-(68, '2020-07-30 15:45:48.000000', 'Boleta', '1', '1', 1);
+(68, '2020-07-30 15:45:48.000000', 'Boleta', '1', '1', 1),
+(70, '2020-08-21 20:44:23.000000', 'Factura', '123456789456', '19677005-4', 1);
 
 -- --------------------------------------------------------
 
@@ -243,7 +250,8 @@ INSERT INTO `persona` (`rut`, `nombre`, `apellidos`, `correo`, `direccion`, `ciu
 ('10192512-9', 'Jorge', 'Troncoso Iturra', 'correoprueba@gmail.com', 'Edmundo Witting 503', 'Tomé', '988776655'),
 ('18529988-0', 'alejandro', 'Troncoso', 'alejandro@gmail.com', 'edmundo witin 503', 'tome', '912345678'),
 ('18821824-5', 'Mauricio ', 'Gutierrez Sanhueza', 'Mauric.gutierr1995@gmail.com', 'Mi casa', 'Coronel', '952429788'),
-('19677005-4', 'Jorge', 'Troncoso', 'j.troncosoi97@gmail.com', 'Edmundo Witting 505', 'Tomé', '912345678');
+('19677005-4', 'Jorge', 'Troncoso', 'j.troncosoi97@gmail.com', 'Edmundo Witting 505', 'Tomé', '912345678'),
+('7002352-0', 'Jorge', 'Troncoso', 'j.troncosoi97@gmail.com', 'Calle nueva 321', 'concepcion', '123456789');
 
 -- --------------------------------------------------------
 
@@ -271,8 +279,9 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `unidad_medida`, `precio_compra`, `precio_venta`, `precio_descuento`, `stock`, `stock_critico`, `descuento`, `imagen`, `Estado`, `categoria_idcategoria`) VALUES
-(780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 70000, 93.5, 100, 0, 'pesa.jpg', 1, 3),
-(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, -2, 20, 0, 'pelota_morada.jpg', 1, 1),
+(12345678978, 'Venda 1', 'unidad', 50000, 70000, 49000, 20, 10, 30, '555.png', 1, 1),
+(780431289642, 'Pesas 12 kgs', 'Gramos', 50000, 70000, 56000, 90.5, 100, 20, 'pesa.jpg', 1, 1),
+(780432874121, 'Pelota morada', 'Unidad', 10000, 20000, 20000, 12, 20, 0, 'pelota_morada.jpg', 1, 1),
 (780784574845, 'Camilla tipo 1', 'Unidad', 100000, 200000, 200000, 88, 20, 0, 'camilla.jpg', 1, 1),
 (780987256314, 'Camilla para masajes', 'Unidad', 150000, 250000, 250000, 19, 5, 0, 'camilla-de-masaje.jpg', 1, 1);
 
@@ -300,8 +309,9 @@ CREATE TABLE `proveedor` (
 
 INSERT INTO `proveedor` (`idproveedor`, `razonsocial`, `direccion`, `ciudad`, `pais`, `telefono`, `correo`, `descripcion`, `Estado`) VALUES
 ('1', 'Razón social de provedor 12312323', 'La direccion del proveedor', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor@proveedor.com', 'Esto es una descrioción larga del proveedor', 1),
-('18821824-5', 'asdasdad2', 'asd', 'asd', 'asd', 'asd', 'asd', 'asd', 1),
-('2', 'Razón', 'La direccion del proveedor	', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor2@proveedor.com', 'Esto es una descrioción larga del proveedor', 1),
+('18821824-5', 'asdasdad2', 'asd', 'asd', 'asd', 'asd', 'asd', 'asd', 0),
+('19677005-4', 'jorge co', 'hola mi casa', 'tome', 'chile', '452132123', 'correo@correo.cl', 'es la persona que me deja baratas la vendas', 1),
+('2', 'Razón', 'La direccion del proveedor	', 'Ciudad del proveedor', 'Pais del proveedor', '+569123456789', 'Proveedor2@proveedor.com', 'Esto es una descrioción larga del proveedor', 0),
 ('3', 'Razón social de proveedores', 'asdasd', 'asdas', 'asd', 'asdas', 'asdasd', 'asdasda', 0),
 ('4', 'RODRIGUEZ SANDOVAL', 'Lejos', 'Taiwan', 'China', '+86 123456789', 'mauric.gutierr1995@gmail.com', 'Esto es una descripción', 1);
 
@@ -327,7 +337,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Mauricio Gutierrez S', 'mauric.gutierr1995@gmail.com', '$2y$10$UNPJ58foXdKAGk2Qz./jE.jpDrg.qDEwGzyJOxzkwSebZYSKNXrZS', 'YM0rD4KHsezBWMF1CVEjuKC2sZZYOg5MDb9PLSUOrpny7cor1CS7m3e0rrCS', '2020-07-28 00:59:57', '2020-07-30 19:21:45'),
-(3, 'koke', 'koke@gmail.com', '$2y$10$eqrYWFdAAL1mAPa/xXYi9.dpYyVNvgUsPzMSlnZvgohA0XVTBtScq', 'F8b7aUDOaaY2Jb1BPf0s4AAocumZ9Y1RiZV7J2i0O6zqciznJOdBWkcbiG5H', '2020-07-29 15:28:45', '2020-08-21 21:42:53'),
+(3, 'koke', 'koke@gmail.com', '$2y$10$eqrYWFdAAL1mAPa/xXYi9.dpYyVNvgUsPzMSlnZvgohA0XVTBtScq', '6KIgk7ttCoCG1XPAMHGzaWxgjUJhwgGJJSgKf5iM6p5JggYKEDSYZaEyfyLB', '2020-07-29 15:28:45', '2020-08-22 00:56:33'),
 (4, 'Juan', 'Juan@gmail.com', '123456', NULL, '2020-07-30 19:34:03', '2020-07-30 19:34:03');
 
 -- --------------------------------------------------------
@@ -354,7 +364,9 @@ CREATE TABLE `venta` (
 
 INSERT INTO `venta` (`idventa`, `total_venta`, `fechaHora`, `Estado`, `persona_rut1`, `n_orden`, `token`, `descripcion`, `ordencomercio`) VALUES
 (1, '520000', '2020-08-21 18:00:38.000000', '1', '19677005-4', 309724, 'A0DAE0725CC10876F3F597454F603185660D041P', '', 1426041023),
-(2, '40000', '2020-08-21 18:00:46.000000', '2', '10192512-9', 309723, '3B723E6783A8DC94772E350FFFCA587C9438E47X', 'esta venta ya fue pagada pero falta stock de uno de los productos para poder completar el pedido', 666267174);
+(2, '40000', '2020-08-21 18:00:46.000000', '0', '10192512-9', 309723, '3B723E6783A8DC94772E350FFFCA587C9438E47X', 'esta venta ya fue pagada pero falta stock de uno de los productos para poder completar el pedido', 666267174),
+(3, '76000', '2020-08-21 20:30:04.000000', '1', '7002352-0', 309812, '99E1E9F1AC3E87580F124A538B47A88BA9CA19FF', '', 1559033621),
+(4, '133280', '2020-08-24 20:48:39.000000', '1', '19677005-4', 311217, 'B9A59E6F60014C7D317EA7FCE8EC7938D3FB497V', '', 643523401);
 
 --
 -- Índices para tablas volcadas
@@ -437,13 +449,13 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT de la tabla `users`

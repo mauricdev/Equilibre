@@ -19,7 +19,7 @@
                     <br>
                     <label for="rut">Descripción: {{ $order['subject'] }}</label>
                     <br>
-                    <label for="rut">RUT Cliente: {{ $order['opcionales']->rut}}</label>
+                    <label for="rut">RUT Cliente: {{ $order['opcionales']->Rut}}</label>
                     <br>
                     <label for="rut">Email Cliente: {{ $order['email'] }}</label>
                 </div>

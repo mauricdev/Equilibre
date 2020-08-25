@@ -86,7 +86,7 @@ class ProductsController extends Controller
         }
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
-        return view('almacen.tienda.carro-compra',['products' => $cart->items,'preciototal' => $cart->preciototal]);
+        return view('almacen.tienda.carro-compra',['products' => $cart->items,'preciototal' => $cart->preciototal,'precioiva' => $cart->precioiva,'preciofinal'=> $cart->preciofinal]);
 
     }
 

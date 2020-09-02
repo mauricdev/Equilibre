@@ -11,16 +11,19 @@ class Ventas extends Model
     protected $primaryKey='idventa';
  
     public $timestamps=false;
- 
+    
+    protected $hidden = ['token','Estado','fechaHora'];
  
     protected $fillable =[
         'idventa',
         'total_venta',
-        'fecha',
         'persona_rut1', 
     ];
- 
+    protected $dateFormat = 'Y-m-d';
     protected $guarded =[
  
+    ];
+    protected $casts = [
+        'fechaHora' => 'date:Y-m-d',
     ];
 }

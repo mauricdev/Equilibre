@@ -10,7 +10,7 @@ use equilibre\Http\Requests\ventasFormRequest;
 use DB;
 use equilibre\detalle_venta;
 use Response;
-
+use Carbon\Carbon;
 class ventasController extends Controller
 {
     public function __construct()
@@ -92,10 +92,10 @@ class ventasController extends Controller
         ,   'Expires'             => '0'
         ,   'Pragma'              => 'public'
     ];
-
-    $list = Ventas::all()->toArray();
-
-    # add headers for each column in the CSV download
+    
+    $date = new Carbon('2020-01-01');
+    $date2 = new Carbon('2022-12-12');
+    $list = Ventas::whereBetween('fechaHora',[$date->startOfDay(), $date2->endOfDay()])->get()->toArray();
     array_unshift($list, array_keys($list[0]));
 
    $callback = function() use ($list) 

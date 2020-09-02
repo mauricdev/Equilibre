@@ -20,7 +20,8 @@
 					<th>Precio compra</th>
 					<th>Precio venta</th>
 					<th>Descuento</th>
-					<th>Precio Final</th>
+					<th>Precio Sin Iva</th>
+					<th>Precio Con Iva</th>
 					<th>Stock</th>
 					<th>Stock_critico</th>					
 					<th>Estado</th>
@@ -37,6 +38,7 @@
 					<td>${{ $art->precio_venta}}</td>
 					<td >{{ $art->descuento}}%</td>
 					<td>${{ $art->precio_descuento}}</td>
+					<td>${{ $art->precio_descuento * 1.19}}</td>
 					@if($art->stock <= $art->stock_critico )
 					<td style="color:red;">{{ $art->stock}}</td>
 					@else
